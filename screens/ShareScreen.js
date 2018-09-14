@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, TextInput} from 'react-native'
+import {StyleSheet, Text, View, Button, TextInput, KeyboardAvoidingView} from 'react-native'
 import ScalableImage from '../components/ScalableImage'
 import emailValidator from 'email-validator'
 import Requirer from '../logic/Requirer'
@@ -33,7 +33,7 @@ export default class HomeScreen extends React.Component {
     
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} enabled={true}>
                 <Text style={styles.headerText}>
                     Your preference:
                 </Text>
@@ -49,11 +49,11 @@ export default class HomeScreen extends React.Component {
                                                            source={Requirer.dynamicImgRequire(sel)} width={80}/>)
                     }
                 </View>
-                <Text style={[styles.headerText, {marginBottom: 16}]}>
-                    Create a team:
-                </Text>
                 <View style={styles.middleView}>
                     <View>
+                        <Text style={styles.headerText}>
+                            Create a team:
+                        </Text>
                         <TextInput
                             style={styles.input}
                             placeholder="Type an email here!"
@@ -77,7 +77,7 @@ export default class HomeScreen extends React.Component {
                         />
                     </View>
                 </View>
-                <View style={styles.bottomView}>
+                <View>
                     <Text style={[styles.headerText]}>
                         Your Team
                     </Text>
@@ -98,10 +98,10 @@ export default class HomeScreen extends React.Component {
                     <Button
                         onPress={() => this.props.navigation.navigate('Suggestion')}
                         title="Invite"
-                        color="white"
+                        color={Config.Color.PRIMARY}
                     />
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     middleView: {
-        flex: 1,
+        flex: 2,
         alignItems: 'flex-start',
         justifyContent: 'space-around',
         flexDirection: 'row'
@@ -133,8 +133,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         margin: 5,
-        marginTop: 10,
-        margin: 15
+        marginTop: 10
     },
     input: {
         height: 40,

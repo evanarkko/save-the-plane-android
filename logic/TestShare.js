@@ -23,8 +23,7 @@ export default class TestShare extends Component {
     }
     
     ShareButton = () => <TouchableOpacity onPress={() => this.setState({visible: !this.state.visible})} style={styles.instructions}>
-        <Text style={{color: "white"}}><Text style={{fontWeight: "bold"}}>Share</Text> on social
-            media</Text>
+        <Text style={{color: "white"}}>{this.state.visible && "close "}<Text style={{fontWeight: "bold"}}>Share</Text>{!this.state.visible && " on social media"}</Text>
     </TouchableOpacity>
     
     render() {
@@ -55,8 +54,10 @@ export default class TestShare extends Component {
     
                 {this.state.visible &&
                 [<Button title={'facebook'}
+                         color={VC.Color.PRIMARY}
                         onPress={() => console.log('hello')}>Facebook</Button>,
                 <Button title={'Linkedin'}
+                        color={VC.Color.PRIMARY}
                         onPress={() => {
                             setTimeout(() => {
                                 Linking.openURL(linkedinURL)

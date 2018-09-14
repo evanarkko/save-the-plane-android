@@ -57,7 +57,7 @@ export default class GroupMasterInputScreen extends React.Component {
                     <Button
                         onPress={() => this.props.navigation.navigate('Selection')}
                         title="Continue"
-                        color="white"
+                        color={Config.Color.PRIMARY}
                     />
                 </View>
             </View>

@@ -38,7 +38,7 @@ export default class HomeScreen extends React.Component {
                     <Button
                         onPress={() => this.navigateFurther()}
                         title="Ready"
-                        color="white"
+                        color={Config.Color.PRIMARY}
                     />
                 </View>
             </View>

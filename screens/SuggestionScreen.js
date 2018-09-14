@@ -51,7 +51,7 @@ export default class SuggestionScreen extends React.Component {
                     <Button
                         onPress={() => this.props.navigation.navigate('Results')}
                         title="Finish"
-                        color="white"
+                        color={VC.Color.PRIMARY}
                     />
                 </View>
             </View>
