@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, TextInput, KeyboardAvoidingView} from 'react-native'
+import {StyleSheet, Text, View, Button, TextInput} from 'react-native'
 import ScalableImage from '../components/ScalableImage'
 import emailValidator from 'email-validator'
 import Requirer from '../logic/Requirer'
@@ -33,7 +33,11 @@ export default class HomeScreen extends React.Component {
     
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} enabled={true}>
+            <View onLayout={(event) => {
+                let {height} = event.nativeEvent.layout;
+                this.setState({height})
+            }}
+                  style={{flex: 1, height: this.state.height}}>
                 <Text style={styles.headerText}>
                     Your preference:
                 </Text>
@@ -101,7 +105,7 @@ export default class HomeScreen extends React.Component {
                         color={Config.Color.PRIMARY}
                     />
                 </View>
-            </KeyboardAvoidingView>
+            </View>
         )
     }
 }
