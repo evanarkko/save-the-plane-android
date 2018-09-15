@@ -65,7 +65,7 @@ export default class HomeScreen extends React.Component {
                             onPress={() => {
                                 if (this.state.new_email) {
                                     if (emailValidator.validate(this.state.new_email)) {
-                                        this.setState({emails: this.state.emails.concat(this.state.new_email)})
+                                        !this.state.emails.includes(this.state.new_email) && this.setState({emails: this.state.emails.concat(this.state.new_email)})
                                     } else {
                                         alert('email not valid')
                                     }
