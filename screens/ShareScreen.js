@@ -1,9 +1,11 @@
 import React from 'react'
 import {StyleSheet, Text, View, Button, TextInput} from 'react-native'
-import ScalableImage from '../components/ScalableImage'
 import emailValidator from 'email-validator'
+import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import Config from '../logic/Config'
+import Api from '../api/Api'
+import Convert from '../logic/Convert'
 
 
 export default class HomeScreen extends React.Component {
@@ -11,7 +13,7 @@ export default class HomeScreen extends React.Component {
         super(props)
         this.state = {
             new_email: '',
-            emails: ['emiller.arkko@gmail.com', 'HC.jatka@hellowrold.co.uk', 'aafdnae@skefm.com']
+            emails: []
         }
         
     }
@@ -32,12 +34,9 @@ export default class HomeScreen extends React.Component {
     }
     
     render() {
+        console.log(this.props.navigation.state.params.selections)
         return (
-            <View onLayout={(event) => {
-                let {height} = event.nativeEvent.layout;
-                this.setState({height})
-            }}
-                  style={{flex: 1, height: this.state.height}}>
+            <View style={styles.container}>
                 <Text style={styles.headerText}>
                     Your preference:
                 </Text>
@@ -53,11 +52,11 @@ export default class HomeScreen extends React.Component {
                                                            source={Requirer.dynamicImgRequire(sel)} width={80}/>)
                     }
                 </View>
+                <Text style={styles.headerText}>
+                    Create a team:
+                </Text>
                 <View style={styles.middleView}>
                     <View>
-                        <Text style={styles.headerText}>
-                            Create a team:
-                        </Text>
                         <TextInput
                             style={styles.input}
                             placeholder="Type an email here!"
@@ -81,10 +80,10 @@ export default class HomeScreen extends React.Component {
                         />
                     </View>
                 </View>
+                <Text style={[styles.headerText]}>
+                    Your Team
+                </Text>
                 <View>
-                    <Text style={[styles.headerText]}>
-                        Your Team
-                    </Text>
                     <View style={{marginBottom: 6, marginLeft: 4}}>
                         {this.state.emails.length !== 0
                             ?
@@ -100,7 +99,7 @@ export default class HomeScreen extends React.Component {
                 </View>
                 <View style={styles.opArea}>
                     <Button
-                        onPress={() => this.props.navigation.navigate('Suggestion')}
+                        onPress={() => Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})}
                         title="Invite"
                         color={Config.Color.PRIMARY}
                     />

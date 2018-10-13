@@ -7,8 +7,10 @@ const Colors = [
     { PRIMARY: '#bcbc14', SECONDARY: '#f9f9c7'},
     { PRIMARY: '#189b9b', SECONDARY: '#e2ffff'}
 ]
+let Color =  Colors[Math.floor(Math.random() * Colors.length)]/*Math.floor(Math.random() * Colors.length)*/
+const toggleColor = () => {
+    Color =  Colors[Math.floor(Math.random() * Colors.length)]
+}
+const Dev = false
 
-const Color =  Colors[Math.floor(Math.random() * Colors.length)]/*Math.floor(Math.random() * Colors.length)*/
-const Dev = true
-
-export default { Color, Dev }
+export default { Color, Dev, toggleColor }

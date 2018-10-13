@@ -44,7 +44,7 @@ export default class TestShare extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.resultsView}>
-                
+                    <Text>result photo here</Text>
                 </View>
                 
                 
@@ -54,9 +54,11 @@ export default class TestShare extends Component {
     
                 {this.state.visible &&
                 [<Button title={'facebook'}
+                         key="facebook"
                          color={VC.Color.PRIMARY}
                         onPress={() => console.log('hello')}>Facebook</Button>,
                 <Button title={'Linkedin'}
+                        key="linkedin"
                         color={VC.Color.PRIMARY}
                         onPress={() => {
                             setTimeout(() => {

@@ -9,6 +9,7 @@ export default class GroupMasterInputScreen extends React.Component {
     constructor(){
         super()
         this.state = {
+            email: "",
             organizationType: "",
             country: ""
         }
@@ -32,7 +33,7 @@ export default class GroupMasterInputScreen extends React.Component {
                     <TextInput
                         style={styles.input}
                         placeholder="Your email"
-                        onChangeText={text => this.setState({userId: text})}
+                        onChangeText={text => this.setState({email: text})}
                     />
                 </View>
                 <View>
@@ -55,7 +56,11 @@ export default class GroupMasterInputScreen extends React.Component {
                 <View style={{flexGrow: 1}}/>
                 <View style={styles.opArea}>
                     <Button
-                        onPress={() => this.props.navigation.navigate('Selection')}
+                        onPress={() => {
+                            if(Config.Dev || this.state.email) {
+                                this.props.navigation.navigate('Selection', {organizationType: this.state.organizationType, country: this.state.country, email: this.state.email})
+                            }
+                        }}
                         title="Continue"
                         color={Config.Color.PRIMARY}
                     />

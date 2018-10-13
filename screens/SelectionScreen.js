@@ -3,6 +3,8 @@ import {StyleSheet, Text, View, Button, Alert, TouchableOpacity} from 'react-nat
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import Config from '../logic/Config'
+import Api from '../api/Api'
+import Convert from '../logic/Convert'
 
 
 export default class HomeScreen extends React.Component {
@@ -60,7 +62,14 @@ export default class HomeScreen extends React.Component {
     
     navigateFurther = () => {
         if (Config.Dev || this.state.selections.length === 17) {
-            this.props.navigation.navigate('Share', {selections: this.state.selections})
+            if(this.props.navigation.state.params.userId) {
+                Api.sendSelections({selections: Convert.arrayToCSV(this.state.selections), userId: this.props.navigation.state.params.userId})
+                this.props.navigation.goBack()
+                //go to previous screen (Home)
+            } else {
+                console.log(this.state.selections)
+                this.props.navigation.navigate('Share', {selections: this.state.selections, ...this.props.navigation.state.params})
+            }
         } else {
             Alert.alert(
                 'A little more',

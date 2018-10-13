@@ -3,71 +3,9 @@ import {StyleSheet, Text, View, Button, TextInput, Alert, Modal, ScrollView} fro
 import CheckBox from 'react-native-checkbox'
 import Config from '../logic/Config'
 import Api from '../api/Api'
+import Content from '../resources/Content'
 
-const termsOfUseText = [
-    {
-        title: 'GENERAL TERMS',
-        text: 'This is an agreement between you (”User”) and Save The Planet Oy (”STP”, ”Service Provider” or ”we”). By ' +
-        'using our mobile app or web service (”Service”), you agree to be bound by the terms of use (”Terms”) of this ' +
-        'Agreement. Some parts of the Service require registration. By using our service or registering, the User accepts' +
-        'the Terms of this Agreement.\n\n' +
-        'The Service provides a decision making platform for reaching the Sustainable Development Goals (SDG’s) of the' +
-        'United Nations by 2030. The User is responsible for all decisions and actions based on using the Service.\n\n' +
-        'The user also agrees to follow the instructions given by the Service Provider or by its contractual partners. We' +
-        'may amend any of the Terms by publishing the revised Terms in the Service.'
-    },
-    {
-        title: 'RIGHT TO USE AND USER INFORMATION',
-        text: 'All information entered as an input in the service can be made Public. However, ' +
-        'personal information and ' +
-        'names of the Users will only be made public if the user explicitly authorizes this. ' +
-        'By creating a Team, or by ' +
-        'accepting an invitation to join an existing Team, the User gains the Right to Use ' +
-        'the Service as defined in these ' +
-        'Terms and other instructions and rules of the Service. The User is required to enter ' +
-        'user information (”User ' +
-        'Information”) for recognizing and identifying purposes. It is a violation of law to ' +
-        'enter false User Information. ' +
-        'By registering, the User accepts that the Service Provider or its contractual ' +
-        'partners may validate the User ' +
-        'Information by using databases created by the relevant authorities or service ' +
-        'providers and/or personal ' +
-        'identification documents.\n\n' +
-        'The User is given a limited Right to Use the Service as defined in this Agreement. ' +
-        'You may not record, publish, ' +
-        'transfer, forward or use the Service or any of its contents, other than as allowed ' +
-        'in these Terms and the ' +
-        'applicable copyright laws. As a registered User, you agree to update any changes to ' +
-        'your User Information ' +
-        'without delay.\n\n' +
-        'The Service Provider has the right to deny the Right to Use by registration, if the ' +
-        'User has not provided ' +
-        'complete and accurate User Information or if the User is otherwise deemed ineligible ' +
-        'to Use the Service by the ' +
-        'Service Provider.\n\n' +
-        'The User must be in full legal capacity to register. Legal persons can also ' +
-        'register. Legal person must possess ' +
-        'full legal capacity to decide and be committed to all actions in the Service. One ' +
-        'person is allowed to have only ' +
-        'one user id. If a person wants to have more than one user id, he or she must get ' +
-        'prior written permission from ' +
-        'the Service Provider.\n\n' +
-        'The Service Provider shall have the right to use User Information for maintenance ' +
-        'purposes, communications ' +
-        'regarding the Service, business planning and development and statistical and ' +
-        'marketing research. With your ' +
-        'permission, the Service Provider shall have the right to use User Information for ' +
-        'direct marketing. All Users are ' +
-        'registered into the customer registry of the Service Provider. The registry as ' +
-        ' defined by the relevant law in ' +
-        ' Finland is available at Save The Planet c/o Bonito Oy, PL 56, 00641 Helsinki, ' +
-        'Finland. All communications ' +
-        'regarding the right to see registry information shall be made in writing and signed ' +
-        'to the address above, by ' +
-        'visiting the registrar in person or by e-mailing to info@savetheplanet.com.'
-    }
-]
-
+const termsOfUseText = Content.english.termsOfUse
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
@@ -121,10 +59,10 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.topView}>
                     {this.state.limbo ?
                         this.state.limbo2 ?
-                            <Text style={{fontWeight: 'bold'}}>Your team is not finished suggesting yet...</Text> :
-                            <Text style={{fontWeight: 'bold'}}>Your team is not finished selecting yet...</Text>
+                            <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Your team is not finished suggesting yet...</Text> :
+                            <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Your team is not finished selecting yet...</Text>
                         :
-                        <Text style={{fontFamily: 'Cochin'}}>What can we do to help reach the Sustainable Development
+                        <Text style={{fontFamily: 'Cochin', textAlign: 'center'}}>What can we do to help reach the Sustainable Development
                             Goals
                             2030?</Text>}
                 
@@ -156,6 +94,7 @@ export default class HomeScreen extends React.Component {
                         <TextInput
                             style={{height: 40, width: 180}}
                             placeholder="Enter Team Key"
+                            keyboardType="numeric"
                             onChangeText={text => this.setState({userId: text})}
                         />
                         <Button
@@ -184,9 +123,9 @@ export default class HomeScreen extends React.Component {
     
     navigateDynamically = async () => {
         if (Config.Dev || this.state.termsAgreedUpon) {
-            switch (Config.Dev ? 1 : await Api.getGroupStatus()) {
+            switch (await Api.getGroupStatus(this.state.userId)) {
                 case 0:
-                    this.props.navigation.navigate('Selection')
+                    this.props.navigation.navigate('Selection', {userId: this.state.userId})
                     break
                 case 1://limbo
                     this.setState({limbo: true})
@@ -194,14 +133,23 @@ export default class HomeScreen extends React.Component {
                     //this.promptLimboAlert()
                     break
                 case 2:
-                    this.props.navigation.navigate('Suggestions')
+                    const top3Selections = await Api.getSelections(this.state.userId)
+                    console.log("wtf")
+                    console.log(top3Selections)
+                    this.props.navigation.navigate('Suggestion', {userId: this.state.userId, selections: top3Selections})
                     break
                 case 3:
                     this.setState({limbo: true, limbo2: true})
                     setTimeout(() => (this.setState({limbo: false, limbo2: false})), 4000)
                     //this.promptLimboAlert()
                     break
-                
+                case 4:
+                    const results = await Api.getResults(this.state.userId)
+                    console.log(JSON.stringify(results))
+                    console.log(JSON.stringify({selections: [...Object.keys(results)], suggestions: results}))
+                    this.props.navigation.navigate('Results', {selections: [...Object.keys(results)], suggestions: results})
+                    break
+        
             }
         } else {
             Alert.alert(
@@ -240,8 +188,8 @@ const styles = StyleSheet.create({
     },
     topView: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-start',
+        justifyContent: 'space-around',
     },
     middleView: {
         flex: 1,
