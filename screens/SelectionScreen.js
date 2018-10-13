@@ -16,7 +16,7 @@ export default class HomeScreen extends React.Component {
     }
     
     static navigationOptions = {
-        title: 'Choose Your Order',
+        title: 'Set My Priority',
         headerStyle: {
             backgroundColor: Config.Color.PRIMARY,
         },

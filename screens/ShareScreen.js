@@ -38,7 +38,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.headerText}>
-                    Your preference:
+                    Your personal TOP 3 priorities:
                 </Text>
                 <View style={styles.topView}>
                     {
@@ -53,7 +53,7 @@ export default class HomeScreen extends React.Component {
                     }
                 </View>
                 <Text style={styles.headerText}>
-                    Create a team:
+                    Invite My Team Members:
                 </Text>
                 <View style={styles.middleView}>
                     <View>
@@ -81,7 +81,7 @@ export default class HomeScreen extends React.Component {
                     </View>
                 </View>
                 <Text style={[styles.headerText]}>
-                    Your Team
+                    My Team
                 </Text>
                 <View>
                     <View style={{marginBottom: 6, marginLeft: 4}}>

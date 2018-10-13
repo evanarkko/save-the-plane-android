@@ -2,7 +2,7 @@ import React from 'react'
 import {StyleSheet, TextInput, Text, View, Button, Picker} from 'react-native'
 import Config from "../logic/Config";
 
-const organizationTypes = ["private", "state", "municipal", "association", "other"]
+const organizationTypes = ["Private", "State", "Municipal", "Association", "Other"]
 const countries = ["Finland", "Iceland", "Norway", "Sweden"]
 
 export default class GroupMasterInputScreen extends React.Component {
@@ -32,7 +32,7 @@ export default class GroupMasterInputScreen extends React.Component {
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Your email"
+                        placeholder="My  email"
                         onChangeText={text => this.setState({email: text})}
                     />
                 </View>
@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
         color: Config.Color.PRIMARY
     },
     input: {
-        height: 40
+        height: 40,
+        flexGrow: 1
     },
     opArea: {
         height: 38,

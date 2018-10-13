@@ -20,7 +20,7 @@ export default class HomeScreen extends React.Component {
     }
     
     static navigationOptions = {
-        title: 'Save the planet',
+        title: 'Save The Planet',
         headerStyle: {
             backgroundColor: Config.Color.PRIMARY,
         },
@@ -62,7 +62,7 @@ export default class HomeScreen extends React.Component {
                             <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Your team is not finished suggesting yet...</Text> :
                             <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Your team is not finished selecting yet...</Text>
                         :
-                        <Text style={{fontFamily: 'Cochin', textAlign: 'center'}}>What can we do to help reach the Sustainable Development
+                        <Text style={{fontFamily: 'Cochin', textAlign: 'center'}}>My team will help reach the Sustainable Development
                             Goals
                             2030?</Text>}
                 
@@ -106,7 +106,7 @@ export default class HomeScreen extends React.Component {
                 </View>
                 <View style={styles.bottomView}>
                     <View style={styles.consentContainer}>
-                        <Text style={{fontSize: 8, maxWidth: '50%'}}>I accept that my suggestions can be made public and
+                        <Text style={{fontSize: 8, maxWidth: '50%'}}>I accept to publicly share all our ideas and
                             agree to the <Text style={{textDecorationLine: 'underline'}}
                                                onPress={() => this.setState({termsModalVisible: true})}>terms of
                                 use</Text>
