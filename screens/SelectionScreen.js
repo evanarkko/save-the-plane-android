@@ -67,7 +67,7 @@ export default class HomeScreen extends React.Component {
                 this.props.navigation.goBack()
                 //go to previous screen (Home)
             } else {
-                console.log(this.state.selections)
+                console.log(this.props.navigation.state.params)
                 this.props.navigation.navigate('Share', {selections: this.state.selections, ...this.props.navigation.state.params})
             }
         } else {

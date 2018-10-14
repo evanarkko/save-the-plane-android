@@ -4,6 +4,7 @@ import emailValidator from 'email-validator'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import Config from '../logic/Config'
+import { NavigationActions } from 'react-navigation'
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
 
@@ -34,7 +35,6 @@ export default class HomeScreen extends React.Component {
     }
     
     render() {
-        console.log(this.props.navigation.state.params.selections)
         return (
             <View style={styles.container}>
                 <Text style={styles.headerText}>
@@ -99,7 +99,12 @@ export default class HomeScreen extends React.Component {
                 </View>
                 <View style={styles.opArea}>
                     <Button
-                        onPress={() => Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})}
+                        onPress={() => {
+                            Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
+                            this.props.navigation.goBack(null)
+                            this.props.navigation.goBack(null)
+                            this.props.navigation.goBack(null)
+                        }}
                         title="Invite"
                         color={Config.Color.PRIMARY}
                     />

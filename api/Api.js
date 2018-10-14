@@ -1,12 +1,10 @@
 import axios from 'axios'
+import Convert from '../logic/Convert'
+
 const baseUrl = 'https://desolate-hollows-50013.herokuapp.com'
 
 
 const sendSelections = async (data) => {//send ordered list of 17 integers, initial send (by group master) sends special groupId/flag so backend can generate new
-    const selectionMockdata = {
-        selections: '2,1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,0',
-        userId: '794d7344-d375-4591-bc39-a7e30e1ccc3f'
-    }
     const res = await axios.post(`${baseUrl}/post-selections/`, data)
     return res
 }
@@ -29,13 +27,13 @@ const getGroupStatus = async (userId) => {//get group status. E.g. is it time to
 //emails, initialAnswers, country, organizationType
 
 const groupGenesis = async (data) => {
-    console.log(JSON.stringify(data))
     const genesisData = {
         addresses: data.email.concat("," + data.addresses),
-        selections: data.selections,
+        selections: Convert.arrayToCSV(data.selections),
         country: data.country,
         organizationType: data.organizationType
     }
+    console.log(JSON.stringify(genesisData))
     const res = await axios.post(`${baseUrl}/group-genesis/`, genesisData)
     
     return res
@@ -43,7 +41,7 @@ const groupGenesis = async (data) => {
 
 const sendSuggestions = async (data) => {
     const suggestionData = {
-        suggestions: data.suggestions,
+        suggestions: {1: data.suggestions[0], 2: data.suggestions[1], 3: data.suggestions[2]},
         userId: data.userId
     }
     const res = await axios.post(`${baseUrl}/post-suggestions/`, suggestionData)
