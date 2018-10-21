@@ -11,7 +11,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selections: []
+            selections: [2, 5, 3, 4, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
         }
     }
     
@@ -29,6 +29,9 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <Text style={styles.instructions}>
+                    Tänne voi hölötellä selitykset että eräjormakin tajuaa mitäs vittua pitää tehdö
+                </Text>
                 <View style={styles.pickArea}>
                     <ImageGrid
                         selectImage={this.selectImage}
@@ -112,7 +115,7 @@ const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
             boxIndex < 18
                 ? <ScalableImage
                     style={styles.image}
-                    source={Requirer.dynamicImgRequire(boxIndex)}
+                    source={Requirer.dynamicImgRequire(selections.indexOf(boxIndex)+1)}
                     onPress={() => selectImage(boxIndex)}
                     width={85}/>
                 : null
@@ -120,10 +123,16 @@ const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
         cols.push(
             <View key={x} style={styles.imageCol}>
                 {image}
-                {selections.includes(boxIndex) &&
+                {boxIndex < 4 &&
                 <TouchableOpacity style={styles.selectedImg}
                                   onPress={() => deselectImage(boxIndex)}>
-                    <Text style={styles.selectedIndex}>{selections.indexOf(boxIndex) + 1}</Text>
+                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
+                </TouchableOpacity>}
+                
+                {boxIndex >= 15 && boxIndex <= 17 &&
+                <TouchableOpacity style={styles.selectedImg}
+                                  onPress={() => deselectImage(boxIndex)}>
+                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
                 </TouchableOpacity>}
             
             </View>
@@ -144,8 +153,12 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'center',
     },
+    instructions: {
+        flex: 1,
+        padding: 5
+    },
     pickArea: {
-        flex: 6
+        flex: 8
     },
     imageRow: {
         flex: 1,
@@ -168,7 +181,7 @@ const styles = StyleSheet.create({
         width: 85,
         height: 85,
         borderRadius: 10,
-        backgroundColor: 'rgba(255,255,255, 0.6)',
+        backgroundColor: 'rgba(255,255,255, 0.4)',
         position: 'absolute'
     },
     selectedIndex: {
