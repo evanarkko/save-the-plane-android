@@ -53,7 +53,7 @@ export default class HomeScreen extends React.Component {
                     }
                 </View>
                 <Text style={styles.headerText}>
-                    Invite My Team Members:
+                    Pick All Team Members:
                 </Text>
                 <View style={styles.middleView}>
                     <View>
@@ -105,7 +105,7 @@ export default class HomeScreen extends React.Component {
                             this.props.navigation.goBack(null)
                             this.props.navigation.goBack(null)
                         }}
-                        title="Invite"
+                        title="Invite all"
                         color={Config.Color.PRIMARY}
                     />
                 </View>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         margin: 5,
-        marginTop: 10
+        marginTop: 10,
     },
     input: {
         height: 40,
@@ -166,8 +166,10 @@ const styles = StyleSheet.create({
         
     },
     opArea: {
+        marginTop:25,
+        padding:10,
         height: 38,
-        backgroundColor: Config.Color.PRIMARY,
+        backgroundColor: Config.Color.SECONDARY,
         justifyContent: 'flex-end'
     }
 });

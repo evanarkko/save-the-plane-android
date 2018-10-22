@@ -6,7 +6,7 @@ import Api from '../api/Api'
 import Requirer from '../logic/Requirer'
 
 export default class SuggestionScreen extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             selectedIndex: 0,
@@ -25,23 +25,35 @@ export default class SuggestionScreen extends React.Component {
         }
     }
     
-    render(){
-        const selections = this.props.navigation.state.params.selections.status
-        return(
+    render() {
+        return (
             <View style={styles.container}>
+                const selections = this.props.navigation.state.params.selections
                 <Text style={styles.headerText}>
                     Suggest solutions ( 15 min )
                 </Text>
                 <View style={styles.topView}>
                     {this.props.navigation.state.params.selections ?
-                        [<ScalableImage onPress={() => this.setState({selectedIndex: 0})} style={[this.state.selectedIndex === 0 && styles.selectedImg, styles.img]} source={Requirer.dynamicImgRequire(selections[0])} width={80}/>,
-                            <ScalableImage onPress={() => this.setState({selectedIndex: 1})} style={[this.state.selectedIndex === 1 && styles.selectedImg, styles.img]} source={Requirer.dynamicImgRequire(selections[1])} width={80}/>,
-                            <ScalableImage onPress={() => this.setState({selectedIndex: 2})} style={[this.state.selectedIndex === 2 && styles.selectedImg, styles.img]} source={Requirer.dynamicImgRequire(selections[2])} width={80}/>]
+                        [<ScalableImage onPress={() => this.setState({selectedIndex: 0})}
+                                        style={[this.state.selectedIndex === 0 && styles.selectedImg, styles.img]}
+                                        source={Requirer.dynamicImgRequire(selections[0])} width={80}/>,
+                            <ScalableImage onPress={() => this.setState({selectedIndex: 1})}
+                                           style={[this.state.selectedIndex === 1 && styles.selectedImg, styles.img]}
+                                           source={Requirer.dynamicImgRequire(selections[1])} width={80}/>,
+                            <ScalableImage onPress={() => this.setState({selectedIndex: 2})}
+                                           style={[this.state.selectedIndex === 2 && styles.selectedImg, styles.img]}
+                                           source={Requirer.dynamicImgRequire(selections[2])} width={80}/>]
                         :
-                        [<ScalableImage onPress={() => this.setState({selectedIndex: 0})} style={[this.state.selectedIndex === 0 && styles.selectedImg, styles.img]} source={require('../prototypeImages/goal_1.jpg')} width={80}/>,
-                            <ScalableImage onPress={() => this.setState({selectedIndex: 1})} style={[this.state.selectedIndex === 1 && styles.selectedImg, styles.img]} source={require('../prototypeImages/goal_2.jpg')} width={80}/>,
-                            <ScalableImage onPress={() => this.setState({selectedIndex: 2})} style={[this.state.selectedIndex === 2 && styles.selectedImg, styles.img]} source={require('../prototypeImages/goal_3.jpg')} width={80}/>]}
-    
+                        [<ScalableImage onPress={() => this.setState({selectedIndex: 0})}
+                                        style={[this.state.selectedIndex === 0 && styles.selectedImg, styles.img]}
+                                        source={require('../prototypeImages/goal_1.jpg')} width={80}/>,
+                            <ScalableImage onPress={() => this.setState({selectedIndex: 1})}
+                                           style={[this.state.selectedIndex === 1 && styles.selectedImg, styles.img]}
+                                           source={require('../prototypeImages/goal_2.jpg')} width={80}/>,
+                            <ScalableImage onPress={() => this.setState({selectedIndex: 2})}
+                                           style={[this.state.selectedIndex === 2 && styles.selectedImg, styles.img]}
+                                           source={require('../prototypeImages/goal_3.jpg')} width={80}/>]}
+                
                 </View>
                 <View>
                     <TextInput
@@ -59,10 +71,17 @@ export default class SuggestionScreen extends React.Component {
                 <View style={styles.opArea}>
                     <Button
                         onPress={() => {
-                            Api.sendSuggestions({suggestions: this.state.suggestions, userId: this.props.navigation.state.params.userId})
-                            this.props.navigation.goBack()
+                            if (this.state.suggestions.filter(s => s).length === 3) {
+                                Api.sendSuggestions({
+                                    suggestions: this.state.suggestions,
+                                    userId: this.props.navigation.state.params.userId
+                                })
+                                this.props.navigation.goBack()
+                            }else{
+                                alert("Please write about all three causes")
+                            }
                         }}
-                        title="Finish"
+                        title="Finished"
                         color={VC.Color.PRIMARY}
                     />
                 </View>
@@ -81,7 +100,7 @@ const styles = StyleSheet.create({
     topView: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        margin: 10,
+        margin: 4,
     },
     img: {
         borderRadius: 10
@@ -91,11 +110,11 @@ const styles = StyleSheet.create({
         borderColor: 'yellow'
     },
     suggestionInput: {
-        height: 160,
+        height: 120,
         margin: 10,
         borderWidth: 1,
         borderRadius: 5,
-        padding:5,
+        padding: 5,
         borderColor: VC.Color.PRIMARY,
     },
     headerText: {
@@ -103,11 +122,10 @@ const styles = StyleSheet.create({
         margin: 5
     },
     opArea: {
-        position: 'absolute',
+        marginBottom: 10,
+        padding: 10,
         height: 38,
         width: '100%',
-        backgroundColor: VC.Color.PRIMARY,
-        justifyContent: 'flex-end',
-        bottom: 0
+        justifyContent: 'flex-end'
     }
 });

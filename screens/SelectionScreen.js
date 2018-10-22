@@ -124,13 +124,13 @@ const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
             <View key={x} style={styles.imageCol}>
                 {image}
                 {boxIndex < 4 &&
-                <TouchableOpacity style={styles.selectedImg}
+                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'green'}]}
                                   onPress={() => deselectImage(boxIndex)}>
                     <Text style={styles.selectedIndex}>{boxIndex}</Text>
                 </TouchableOpacity>}
                 
                 {boxIndex >= 15 && boxIndex <= 17 &&
-                <TouchableOpacity style={styles.selectedImg}
+                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'red'}]}
                                   onPress={() => deselectImage(boxIndex)}>
                     <Text style={styles.selectedIndex}>{boxIndex}</Text>
                 </TouchableOpacity>}
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     image: {
         borderRadius: 10
     },
+    
     selectedImg: {
         flex: 1,
         flexDirection: 'column',
