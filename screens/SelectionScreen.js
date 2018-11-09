@@ -30,7 +30,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.instructions}>
-                    Tänne voi hölötellä selitykset että eräjormakin tajuaa mitäs vittua pitää tehdö
+                    Select your priority for the goals. The orders of top 3 and bottom 3 are most important.
                 </Text>
                 <View style={styles.pickArea}>
                     <ImageGrid
@@ -112,28 +112,17 @@ const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
     for (let x = 0; x < 4; x++) {
         const boxIndex = (y * 4) + x + 1
         const image =
-            boxIndex < 18
+            boxIndex < 17
                 ? <ScalableImage
                     style={styles.image}
-                    source={Requirer.dynamicImgRequire(selections.indexOf(boxIndex)+1)}
-                    onPress={() => selectImage(boxIndex)}
+                    source={Requirer.dynamicImgRequire(selections[boxIndex-1]-1)}
                     width={85}/>
                 : null
-        
+        console.log(boxIndex)
         cols.push(
             <View key={x} style={styles.imageCol}>
                 {image}
-                {boxIndex < 4 &&
-                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'green'}]}
-                                  onPress={() => deselectImage(boxIndex)}>
-                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
-                </TouchableOpacity>}
                 
-                {boxIndex >= 15 && boxIndex <= 17 &&
-                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'red'}]}
-                                  onPress={() => deselectImage(boxIndex)}>
-                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
-                </TouchableOpacity>}
             
             </View>
         )
@@ -144,6 +133,16 @@ const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
         </View>
     )
 }
+
+/*{boxIndex < 4 &&
+                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'green'}]}>
+                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
+                </TouchableOpacity>}
+                
+                {boxIndex >= 15 && boxIndex <= 17 &&
+                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'red'}]}>
+                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
+                </TouchableOpacity>}*/
 
 
 const styles = StyleSheet.create({
