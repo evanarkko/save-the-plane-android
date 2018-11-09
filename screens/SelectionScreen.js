@@ -5,15 +5,19 @@ import Requirer from '../logic/Requirer'
 import Config from '../logic/Config'
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
-import Draggable from 'react-native-draggable'
+import DraggableImage from '../components/DraggableImage'
+import {swapSpots} from "../logic/ArrayLogic";
+import {Dimensions} from "react-native"
 
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selections: [2, 5, 3, 4, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+            selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
         }
+        console.log("width: " + Dimensions.get('window').width) //MAKE DIMENSION ADJUSTMENTS WITH THIS (and height)
+        console.log("height: " + Dimensions.get('window').height) //development dimensions: 360, 598
     }
     
     static navigationOptions = {
@@ -25,6 +29,29 @@ export default class HomeScreen extends React.Component {
         headerTitleStyle: {
             fontWeight: 'bold',
         }
+    }
+    
+    
+    
+    coordinatesToIndex = (x, y) => {
+        const x1 = 20
+        const y1 = 130
+        const blockWidth = 65
+        if(x1 < x && x < x1+blockWidth && y1 < y && y < y1+blockWidth) return 0
+        if(110 < x && x < 110+blockWidth && y1 < y && y < y1+blockWidth) return 1
+        if(195 < x && x < 195+blockWidth && y1 < y && y < y1+blockWidth) return 2
+        if(284 < x && x < 284+blockWidth && y1 < y && y < y1+blockWidth) return 3
+        
+        
+        return -1
+    }
+    
+    swapSelections = (x, y) => {
+        this.setState({selections: swapSpots(this.state.selections, x, y)})
+    }
+    
+    onBlockRelease = (x, y, iDragged) => {
+        if(this.coordinatesToIndex(x, y) > -1) this.swapSelections(this.coordinatesToIndex(x, y), iDragged)
     }
     
     render() {
@@ -39,6 +66,8 @@ export default class HomeScreen extends React.Component {
                         selectImage={this.selectImage}
                         deselectImage={this.deselectImage}
                         selections={this.state.selections}
+                        onBlockRelease={this.onBlockRelease}
+                        coordinateToIndex={this.coordinatesToIndex}
                     />
                 </View>
                 <View style={styles.opArea}>
@@ -48,7 +77,6 @@ export default class HomeScreen extends React.Component {
                         color={Config.Color.PRIMARY}
                     />
                 </View>
-                <Draggable renderSize={56} reverse={false} renderColor='black' offsetX={-100} offsetY={-200} renderText='A' pressDrag={()=>alert('touched!!')}/>
             </View>
         )
     }
@@ -73,7 +101,6 @@ export default class HomeScreen extends React.Component {
                 this.props.navigation.goBack()
                 //go to previous screen (Home)
             } else {
-                console.log(this.props.navigation.state.params)
                 this.props.navigation.navigate('Share', {selections: this.state.selections, ...this.props.navigation.state.params})
             }
         } else {
@@ -89,7 +116,7 @@ export default class HomeScreen extends React.Component {
     }
 }
 
-const ImageGrid = ({selectImage, deselectImage, selections}) => {
+const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex}) => {
     let rows = []
     for (let y = 0; y < 5; y++) {
         rows.push(
@@ -99,6 +126,8 @@ const ImageGrid = ({selectImage, deselectImage, selections}) => {
                     selectImage={selectImage}
                     deselectImage={deselectImage}
                     selections={selections}
+                    onBlockRelease={onBlockRelease}
+                    coordinateToIndex={coordinateToIndex}
                 />
             </View>
         )
@@ -110,19 +139,22 @@ const ImageGrid = ({selectImage, deselectImage, selections}) => {
     )
 }
 
-const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
+const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex}) => {
     const width = 80
     let cols = []
     for (let x = 0; x < 4; x++) {
         const boxIndex = (y * 4) + x + 1
         const image =
-            boxIndex < 17
-                ? <ScalableImage
+            boxIndex < 18
+                ?
+                <DraggableImage index={selections[boxIndex-1]-1} onRelease={(x, y) => {
+                    console.log(x + ", " + y + ": " + coordinateToIndex(x, y))
+                    onBlockRelease(x, y, boxIndex-1)
+                }}/> /*<ScalableImage
                     style={styles.image}
                     source={Requirer.dynamicImgRequire(selections[boxIndex-1]-1)}
-                    width={width}/>
+                    width={width}/>*/
                 : null
-        console.log(boxIndex)
         cols.push(
             <View key={x} style={styles.imageCol}>
                 {image}

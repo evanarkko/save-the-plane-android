@@ -20,7 +20,6 @@ const imageRequirements =
     ]
 
 const dynamicImgRequire = (index) => {
-        console.log("requiring index: " + index)
     return imageRequirements[index] //index starts at 1
 }
 
