@@ -9,6 +9,8 @@ import DraggableImage from '../components/DraggableImage'
 import {swapSpots} from "../logic/ArrayLogic";
 import {Dimensions} from "react-native"
 
+const hardWidth = 360
+const hardHeight = 598
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
@@ -17,7 +19,7 @@ export default class HomeScreen extends React.Component {
             selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
         }
         console.log("width: " + Dimensions.get('window').width) //MAKE DIMENSION ADJUSTMENTS WITH THIS (and height)
-        console.log("height: " + Dimensions.get('window').height) //development dimensions: 360, 598
+        console.log("height: " + Dimensions.get('window').height) //for x use (hardWidth/Dimensions.get('window').width) * x and so on
     }
     
     static navigationOptions = {
