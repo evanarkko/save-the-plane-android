@@ -5,6 +5,7 @@ import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import Config from '../logic/Config'
 import { NavigationActions } from 'react-navigation'
+import {AsyncStorage} from "react-native"
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
 
@@ -27,6 +28,18 @@ export default class HomeScreen extends React.Component {
         headerTintColor: 'white',
         headerTitleStyle: {
             fontWeight: 'bold',
+        }
+    }
+    
+    saveIdToStorage = async (res) => {
+        const user = res.data.generatedUsers[0]
+        console.log(user)
+        const userId = user.substring(12, 48)
+        console.log(userId)
+        try {
+            await AsyncStorage.setItem('id', userId);
+        } catch (error) {
+            console.log("failed to save ID")
         }
     }
     
@@ -99,11 +112,12 @@ export default class HomeScreen extends React.Component {
                 </View>
                 <View style={styles.opArea}>
                     <Button
-                        onPress={() => {
-                            Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
+                        onPress={async () => {
+                            const res = await Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
                             this.props.navigation.goBack(null)
                             this.props.navigation.goBack(null)
                             this.props.navigation.goBack(null)
+                            await this.saveIdToStorage(res)
                         }}
                         title="Invite all"
                         color={Config.Color.PRIMARY}

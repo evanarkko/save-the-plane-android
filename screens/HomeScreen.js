@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, TextInput, Alert, Modal, ScrollView} from 'react-native'
+import {StyleSheet, Text, View, Button, TextInput, Alert, Modal, ScrollView, AsyncStorage} from 'react-native'
 import CheckBox from 'react-native-checkbox'
 import Config from '../logic/Config'
 import Api from '../api/Api'
@@ -27,6 +27,21 @@ export default class HomeScreen extends React.Component {
         headerTintColor: 'white',
         headerTitleStyle: {
             fontWeight: 'bold',
+        }
+    }
+    
+    componentWillMount = async () => {
+        this.setState({userId: await this.getIdFromStorage()})
+    }
+    
+    getIdFromStorage = async () => {
+        try {
+            const value = await AsyncStorage.getItem('id');
+            if (value !== null) {
+                return value
+            }
+        } catch (error) {
+            console.log("failed to retreive ID from storage")
         }
     }
     
@@ -95,6 +110,7 @@ export default class HomeScreen extends React.Component {
                             style={{height: 40, width: 180}}
                             placeholder="Enter Team Key"
                             keyboardType="numeric"
+                            value={this.state.userId}
                             onChangeText={text => this.setState({userId: text})}
                         />
                         <Button
