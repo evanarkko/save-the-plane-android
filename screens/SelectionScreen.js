@@ -34,15 +34,45 @@ export default class HomeScreen extends React.Component {
     }
     
     
-    
     coordinatesToIndex = (x, y) => {
         const x1 = 20
+        const x2 = 110
+        const x3 = 195
+        const x4 = 284
+    
+    
         const y1 = 130
+        const y2 = 210
+        const y3 = 300
+        const y4 = 378
+        const y5 = 455
+        
         const blockWidth = 65
-        if(x1 < x && x < x1+blockWidth && y1 < y && y < y1+blockWidth) return 0
-        if(110 < x && x < 110+blockWidth && y1 < y && y < y1+blockWidth) return 1
-        if(195 < x && x < 195+blockWidth && y1 < y && y < y1+blockWidth) return 2
-        if(284 < x && x < 284+blockWidth && y1 < y && y < y1+blockWidth) return 3
+        
+        //1st row
+        if (x1 < x && x < x1 + blockWidth  &&  y1 < y && y < y1 + blockWidth) return 0
+        if (x2 < x && x < x2 + blockWidth  &&  y1 < y && y < y1 + blockWidth) return 1
+        if (x3 < x && x < x3 + blockWidth  &&  y1 < y && y < y1 + blockWidth) return 2
+        if (x4 < x && x < x4 + blockWidth  &&  y1 < y && y < y1 + blockWidth) return 3
+        
+        //2nd..
+        if (x1 < x && x < x1 + blockWidth  &&  y2 < y && y < y2 + blockWidth) return 4
+        if (x2 < x && x < x2 + blockWidth  &&  y2 < y && y < y2 + blockWidth) return 5
+        if (x3 < x && x < x3 + blockWidth  &&  y2 < y && y < y2 + blockWidth) return 6
+        if (x4 < x && x < x4 + blockWidth  &&  y2 < y && y < y2 + blockWidth) return 7
+    
+        if (x1 < x && x < x1 + blockWidth  &&  y3 < y && y < y3 + blockWidth) return 8
+        if (x2 < x && x < x2 + blockWidth  &&  y3 < y && y < y3 + blockWidth) return 9
+        if (x3 < x && x < x3 + blockWidth  &&  y3 < y && y < y3 + blockWidth) return 10
+        if (x4 < x && x < x4 + blockWidth  &&  y3 < y && y < y3 + blockWidth) return 11
+    
+        if (x1 < x && x < x1 + blockWidth  &&  y4 < y && y < y4 + blockWidth) return 12
+        if (x2 < x && x < x2 + blockWidth  &&  y4 < y && y < y4 + blockWidth) return 13
+        if (x3 < x && x < x3 + blockWidth  &&  y4 < y && y < y4 + blockWidth) return 14
+        if (x4 < x && x < x4 + blockWidth  &&  y4 < y && y < y4 + blockWidth) return 15
+    
+        if (x1 < x && x < x1 + blockWidth  &&  y5 < y && y < y5 + blockWidth) return 16
+        
         
         
         return -1
@@ -53,7 +83,7 @@ export default class HomeScreen extends React.Component {
     }
     
     onBlockRelease = (x, y, iDragged) => {
-        if(this.coordinatesToIndex(x, y) > -1) this.swapSelections(this.coordinatesToIndex(x, y), iDragged)
+        if (this.coordinatesToIndex(x, y) > -1) this.swapSelections(this.coordinatesToIndex(x, y), iDragged)
     }
     
     render() {
@@ -62,7 +92,7 @@ export default class HomeScreen extends React.Component {
                 <Text style={styles.instructions}>
                     Select your priority for the goals. The orders of top 3 and bottom 3 are most important.
                 </Text>
-    
+                
                 <View style={styles.pickArea}>
                     <ImageGrid
                         selectImage={this.selectImage}
@@ -98,8 +128,11 @@ export default class HomeScreen extends React.Component {
     
     navigateFurther = () => {
         if (Config.Dev || this.state.selections.length === 17) {
-            if(this.props.navigation.state.params.userId) {
-                Api.sendSelections({selections: Convert.arrayToCSV(this.state.selections), userId: this.props.navigation.state.params.userId})
+            if (this.props.navigation.state.params.userId) {
+                Api.sendSelections({
+                    selections: Convert.arrayToCSV(this.state.selections),
+                    userId: this.props.navigation.state.params.userId
+                })
                 this.props.navigation.goBack()
                 //go to previous screen (Home)
             } else {
@@ -149,9 +182,8 @@ const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease
         const image =
             boxIndex < 18
                 ?
-                <DraggableImage index={selections[boxIndex-1]-1} onRelease={(x, y) => {
-                    console.log(x + ", " + y + ": " + coordinateToIndex(x, y))
-                    onBlockRelease(x, y, boxIndex-1)
+                <DraggableImage index={selections[boxIndex - 1] - 1} onRelease={(x, y) => {
+                    onBlockRelease(x, y, boxIndex - 1)
                 }}/> /*<ScalableImage
                     style={styles.image}
                     source={Requirer.dynamicImgRequire(selections[boxIndex-1]-1)}
@@ -160,7 +192,7 @@ const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease
         cols.push(
             <View key={x} style={styles.imageCol}>
                 {image}
-                
+            
             
             </View>
         )

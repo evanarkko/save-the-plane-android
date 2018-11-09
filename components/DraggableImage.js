@@ -11,7 +11,8 @@ export default class Draggable extends Component {
     constructor() {
         super();
         this.state = {
-            pan: new Animated.ValueXY()
+            pan: new Animated.ValueXY(),
+            elevated: false
         };
     }
     
@@ -21,6 +22,9 @@ export default class Draggable extends Component {
         this.state.pan.addListener((value) => this._val = value);
         // Initialize PanResponder with move handling
         this.panResponder = PanResponder.create({
+            onPanResponderStart: (e, gestureState) => {
+                this.setState({elevated: true})
+            },
             onStartShouldSetPanResponder: (e, gesture) => true,
             onPanResponderMove: Animated.event([
                 null, { dx: this.state.pan.x, dy: this.state.pan.y }
@@ -31,6 +35,7 @@ export default class Draggable extends Component {
                     toValue: { x: 0, y: 0 },
                     friction: 5
                 }).start();
+                this.setState({elevated: false})
             }
         });
             // adjusting delta value
@@ -41,7 +46,8 @@ export default class Draggable extends Component {
     
     render() {
         const panStyle = {
-            transform: this.state.pan.getTranslateTransform()
+            transform: this.state.pan.getTranslateTransform(),
+            zIndex: this.state.elevated ? 1 : 0
         }
         return (
             <Animated.Image
