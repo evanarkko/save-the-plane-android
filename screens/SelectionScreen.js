@@ -5,6 +5,7 @@ import Requirer from '../logic/Requirer'
 import Config from '../logic/Config'
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
+import Draggable from 'react-native-draggable'
 
 
 export default class HomeScreen extends React.Component {
@@ -32,6 +33,7 @@ export default class HomeScreen extends React.Component {
                 <Text style={styles.instructions}>
                     Select your priority for the goals. The orders of top 3 and bottom 3 are most important.
                 </Text>
+    
                 <View style={styles.pickArea}>
                     <ImageGrid
                         selectImage={this.selectImage}
@@ -46,6 +48,7 @@ export default class HomeScreen extends React.Component {
                         color={Config.Color.PRIMARY}
                     />
                 </View>
+                <Draggable renderSize={56} reverse={false} renderColor='black' offsetX={-100} offsetY={-200} renderText='A' pressDrag={()=>alert('touched!!')}/>
             </View>
         )
     }
@@ -108,6 +111,7 @@ const ImageGrid = ({selectImage, deselectImage, selections}) => {
 }
 
 const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
+    const width = 80
     let cols = []
     for (let x = 0; x < 4; x++) {
         const boxIndex = (y * 4) + x + 1
@@ -116,7 +120,7 @@ const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
                 ? <ScalableImage
                     style={styles.image}
                     source={Requirer.dynamicImgRequire(selections[boxIndex-1]-1)}
-                    width={85}/>
+                    width={width}/>
                 : null
         console.log(boxIndex)
         cols.push(
@@ -154,7 +158,9 @@ const styles = StyleSheet.create({
     },
     instructions: {
         flex: 1,
-        padding: 5
+        padding: 5,
+        fontSize: 15,
+        fontWeight: "bold"
     },
     pickArea: {
         flex: 8

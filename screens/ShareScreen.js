@@ -31,13 +31,17 @@ export default class HomeScreen extends React.Component {
         }
     }
     
-    saveIdToStorage = async (res) => {
+    extractId = (res) => {
         const user = res.data.generatedUsers[0]
         console.log(user)
         const userId = user.substring(12, 48)
         console.log(userId)
+        return userId
+    }
+    
+    saveIdToStorage = async (res) => {
         try {
-            await AsyncStorage.setItem('id', userId);
+            await AsyncStorage.setItem('id', this.extractId(res));
         } catch (error) {
             console.log("failed to save ID")
         }
@@ -117,7 +121,8 @@ export default class HomeScreen extends React.Component {
                             this.props.navigation.goBack(null)
                             this.props.navigation.goBack(null)
                             this.props.navigation.goBack(null)
-                            await this.saveIdToStorage(res)
+                            this.saveIdToStorage(res)
+                            alert("You have created a new group. Your groupId is " + this.extractId(res))
                         }}
                         title="Invite all"
                         color={Config.Color.PRIMARY}
