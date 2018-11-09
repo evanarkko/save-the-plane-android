@@ -5,14 +5,21 @@ import Requirer from '../logic/Requirer'
 import Config from '../logic/Config'
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
+import DraggableImage from '../components/DraggableImage'
+import {swapSpots} from "../logic/ArrayLogic";
+import {Dimensions} from "react-native"
 
+const hardWidth = 360
+const hardHeight = 598
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selections: []
+            selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
         }
+        console.log("width: " + Dimensions.get('window').width) //MAKE DIMENSION ADJUSTMENTS WITH THIS (and height)
+        console.log("height: " + Dimensions.get('window').height) //for x use (hardWidth/Dimensions.get('window').width) * x and so on
     }
     
     static navigationOptions = {
@@ -26,14 +33,43 @@ export default class HomeScreen extends React.Component {
         }
     }
     
+    
+    
+    coordinatesToIndex = (x, y) => {
+        const x1 = 20
+        const y1 = 130
+        const blockWidth = 65
+        if(x1 < x && x < x1+blockWidth && y1 < y && y < y1+blockWidth) return 0
+        if(110 < x && x < 110+blockWidth && y1 < y && y < y1+blockWidth) return 1
+        if(195 < x && x < 195+blockWidth && y1 < y && y < y1+blockWidth) return 2
+        if(284 < x && x < 284+blockWidth && y1 < y && y < y1+blockWidth) return 3
+        
+        
+        return -1
+    }
+    
+    swapSelections = (x, y) => {
+        this.setState({selections: swapSpots(this.state.selections, x, y)})
+    }
+    
+    onBlockRelease = (x, y, iDragged) => {
+        if(this.coordinatesToIndex(x, y) > -1) this.swapSelections(this.coordinatesToIndex(x, y), iDragged)
+    }
+    
     render() {
         return (
             <View style={styles.container}>
+                <Text style={styles.instructions}>
+                    Select your priority for the goals. The orders of top 3 and bottom 3 are most important.
+                </Text>
+    
                 <View style={styles.pickArea}>
                     <ImageGrid
                         selectImage={this.selectImage}
                         deselectImage={this.deselectImage}
                         selections={this.state.selections}
+                        onBlockRelease={this.onBlockRelease}
+                        coordinateToIndex={this.coordinatesToIndex}
                     />
                 </View>
                 <View style={styles.opArea}>
@@ -67,7 +103,6 @@ export default class HomeScreen extends React.Component {
                 this.props.navigation.goBack()
                 //go to previous screen (Home)
             } else {
-                console.log(this.props.navigation.state.params)
                 this.props.navigation.navigate('Share', {selections: this.state.selections, ...this.props.navigation.state.params})
             }
         } else {
@@ -83,7 +118,7 @@ export default class HomeScreen extends React.Component {
     }
 }
 
-const ImageGrid = ({selectImage, deselectImage, selections}) => {
+const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex}) => {
     let rows = []
     for (let y = 0; y < 5; y++) {
         rows.push(
@@ -93,6 +128,8 @@ const ImageGrid = ({selectImage, deselectImage, selections}) => {
                     selectImage={selectImage}
                     deselectImage={deselectImage}
                     selections={selections}
+                    onBlockRelease={onBlockRelease}
+                    coordinateToIndex={coordinateToIndex}
                 />
             </View>
         )
@@ -104,27 +141,26 @@ const ImageGrid = ({selectImage, deselectImage, selections}) => {
     )
 }
 
-const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
+const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex}) => {
+    const width = 80
     let cols = []
     for (let x = 0; x < 4; x++) {
         const boxIndex = (y * 4) + x + 1
         const image =
             boxIndex < 18
-                ? <ScalableImage
+                ?
+                <DraggableImage index={selections[boxIndex-1]-1} onRelease={(x, y) => {
+                    console.log(x + ", " + y + ": " + coordinateToIndex(x, y))
+                    onBlockRelease(x, y, boxIndex-1)
+                }}/> /*<ScalableImage
                     style={styles.image}
-                    source={Requirer.dynamicImgRequire(boxIndex)}
-                    onPress={() => selectImage(boxIndex)}
-                    width={85}/>
+                    source={Requirer.dynamicImgRequire(selections[boxIndex-1]-1)}
+                    width={width}/>*/
                 : null
-        
         cols.push(
             <View key={x} style={styles.imageCol}>
                 {image}
-                {selections.includes(boxIndex) &&
-                <TouchableOpacity style={styles.selectedImg}
-                                  onPress={() => deselectImage(boxIndex)}>
-                    <Text style={styles.selectedIndex}>{selections.indexOf(boxIndex) + 1}</Text>
-                </TouchableOpacity>}
+                
             
             </View>
         )
@@ -136,6 +172,16 @@ const ImageColumns = ({y, selectImage, deselectImage, selections}) => {
     )
 }
 
+/*{boxIndex < 4 &&
+                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'green'}]}>
+                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
+                </TouchableOpacity>}
+                
+                {boxIndex >= 15 && boxIndex <= 17 &&
+                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'red'}]}>
+                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
+                </TouchableOpacity>}*/
+
 
 const styles = StyleSheet.create({
     container: {
@@ -144,8 +190,14 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'center',
     },
+    instructions: {
+        flex: 1,
+        padding: 5,
+        fontSize: 15,
+        fontWeight: "bold"
+    },
     pickArea: {
-        flex: 6
+        flex: 8
     },
     imageRow: {
         flex: 1,
@@ -159,6 +211,7 @@ const styles = StyleSheet.create({
     image: {
         borderRadius: 10
     },
+    
     selectedImg: {
         flex: 1,
         flexDirection: 'column',
@@ -168,7 +221,7 @@ const styles = StyleSheet.create({
         width: 85,
         height: 85,
         borderRadius: 10,
-        backgroundColor: 'rgba(255,255,255, 0.6)',
+        backgroundColor: 'rgba(255,255,255, 0.4)',
         position: 'absolute'
     },
     selectedIndex: {

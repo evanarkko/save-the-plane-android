@@ -20,7 +20,7 @@ const imageRequirements =
     ]
 
 const dynamicImgRequire = (index) => {
-    return imageRequirements[index-1] //index starts at 1
+    return imageRequirements[index] //index starts at 1
 }
 
 export default {dynamicImgRequire}

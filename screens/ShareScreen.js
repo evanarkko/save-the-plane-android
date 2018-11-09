@@ -5,6 +5,7 @@ import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import Config from '../logic/Config'
 import { NavigationActions } from 'react-navigation'
+import {AsyncStorage} from "react-native"
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
 
@@ -27,6 +28,22 @@ export default class HomeScreen extends React.Component {
         headerTintColor: 'white',
         headerTitleStyle: {
             fontWeight: 'bold',
+        }
+    }
+    
+    extractId = (res) => {
+        const user = res.data.generatedUsers[0]
+        console.log(user)
+        const userId = user.substring(12, 48)
+        console.log(userId)
+        return userId
+    }
+    
+    saveIdToStorage = async (res) => {
+        try {
+            await AsyncStorage.setItem('id', this.extractId(res));
+        } catch (error) {
+            console.log("failed to save ID")
         }
     }
     
@@ -53,7 +70,7 @@ export default class HomeScreen extends React.Component {
                     }
                 </View>
                 <Text style={styles.headerText}>
-                    Invite My Team Members:
+                    Pick All Team Members:
                 </Text>
                 <View style={styles.middleView}>
                     <View>
@@ -99,13 +116,15 @@ export default class HomeScreen extends React.Component {
                 </View>
                 <View style={styles.opArea}>
                     <Button
-                        onPress={() => {
-                            Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
+                        onPress={async () => {
+                            const res = await Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
                             this.props.navigation.goBack(null)
                             this.props.navigation.goBack(null)
                             this.props.navigation.goBack(null)
+                            this.saveIdToStorage(res)
+                            alert("You have created a new group. Your groupId is " + this.extractId(res))
                         }}
-                        title="Invite"
+                        title="Invite all"
                         color={Config.Color.PRIMARY}
                     />
                 </View>
@@ -141,7 +160,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         margin: 5,
-        marginTop: 10
+        marginTop: 10,
     },
     input: {
         height: 40,
@@ -166,8 +185,10 @@ const styles = StyleSheet.create({
         
     },
     opArea: {
+        marginTop:25,
+        padding:10,
         height: 38,
-        backgroundColor: Config.Color.PRIMARY,
+        backgroundColor: Config.Color.SECONDARY,
         justifyContent: 'flex-end'
     }
 });
