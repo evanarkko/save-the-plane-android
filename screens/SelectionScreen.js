@@ -16,9 +16,11 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+            selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+            scaleFactorX: hardWidth / Dimensions.get('window').width,
+            scaleFactorY: hardHeight / Dimensions.get('window').height
         }
-        console.log("width: " + Dimensions.get('window').width) //MAKE DIMENSION ADJUSTMENTS WITH THIS (and height)
+        console.log("width: " +  Dimensions.get('window').width) //MAKE DIMENSION ADJUSTMENTS WITH THIS (and height)
         console.log("height: " + Dimensions.get('window').height) //for x use (hardWidth/Dimensions.get('window').width) * x and so on
     }
     
@@ -35,45 +37,45 @@ export default class HomeScreen extends React.Component {
     
     
     coordinatesToIndex = (x, y) => {
-        const x1 = 20
-        const x2 = 110
-        const x3 = 195
-        const x4 = 284
+        const x1 = 20 * this.state.scaleFactorX
+        const x2 = 110 * this.state.scaleFactorX
+        const x3 = 195 * this.state.scaleFactorX
+        const x4 = 284 * this.state.scaleFactorX
     
     
-        const y1 = 130
-        const y2 = 210
-        const y3 = 300
-        const y4 = 378
-        const y5 = 455
+        const y1 = 130 * this.state.scaleFactorY
+        const y2 = 210 * this.state.scaleFactorY
+        const y3 = 300 * this.state.scaleFactorY
+        const y4 = 378 * this.state.scaleFactorY
+        const y5 = 455 * this.state.scaleFactorY
+    
+        const blockWidthX = 65 * this.state.scaleFactorX
+        const blockWidthY = 65 * this.state.scaleFactorY
         
-        const blockWidth = 65
         
         //1st row
-        if (x1 < x && x < x1 + blockWidth  &&  y1 < y && y < y1 + blockWidth) return 0
-        if (x2 < x && x < x2 + blockWidth  &&  y1 < y && y < y1 + blockWidth) return 1
-        if (x3 < x && x < x3 + blockWidth  &&  y1 < y && y < y1 + blockWidth) return 2
-        if (x4 < x && x < x4 + blockWidth  &&  y1 < y && y < y1 + blockWidth) return 3
+        if (x1 < x && x < x1 + blockWidthX  &&  y1 < y && y < y1 + blockWidthY) return 0
+        if (x2 < x && x < x2 + blockWidthX  &&  y1 < y && y < y1 + blockWidthY) return 1
+        if (x3 < x && x < x3 + blockWidthX  &&  y1 < y && y < y1 + blockWidthY) return 2
+        if (x4 < x && x < x4 + blockWidthX  &&  y1 < y && y < y1 + blockWidthY) return 3
         
         //2nd..
-        if (x1 < x && x < x1 + blockWidth  &&  y2 < y && y < y2 + blockWidth) return 4
-        if (x2 < x && x < x2 + blockWidth  &&  y2 < y && y < y2 + blockWidth) return 5
-        if (x3 < x && x < x3 + blockWidth  &&  y2 < y && y < y2 + blockWidth) return 6
-        if (x4 < x && x < x4 + blockWidth  &&  y2 < y && y < y2 + blockWidth) return 7
+        if (x1 < x && x < x1 + blockWidthX  &&  y2 < y && y < y2 + blockWidthY) return 4
+        if (x2 < x && x < x2 + blockWidthX  &&  y2 < y && y < y2 + blockWidthY) return 5
+        if (x3 < x && x < x3 + blockWidthX  &&  y2 < y && y < y2 + blockWidthY) return 6
+        if (x4 < x && x < x4 + blockWidthX  &&  y2 < y && y < y2 + blockWidthY) return 7
     
-        if (x1 < x && x < x1 + blockWidth  &&  y3 < y && y < y3 + blockWidth) return 8
-        if (x2 < x && x < x2 + blockWidth  &&  y3 < y && y < y3 + blockWidth) return 9
-        if (x3 < x && x < x3 + blockWidth  &&  y3 < y && y < y3 + blockWidth) return 10
-        if (x4 < x && x < x4 + blockWidth  &&  y3 < y && y < y3 + blockWidth) return 11
+        if (x1 < x && x < x1 + blockWidthX  &&  y3 < y && y < y3 + blockWidthY) return 8
+        if (x2 < x && x < x2 + blockWidthX  &&  y3 < y && y < y3 + blockWidthY) return 9
+        if (x3 < x && x < x3 + blockWidthX  &&  y3 < y && y < y3 + blockWidthY) return 10
+        if (x4 < x && x < x4 + blockWidthX  &&  y3 < y && y < y3 + blockWidthY) return 11
     
-        if (x1 < x && x < x1 + blockWidth  &&  y4 < y && y < y4 + blockWidth) return 12
-        if (x2 < x && x < x2 + blockWidth  &&  y4 < y && y < y4 + blockWidth) return 13
-        if (x3 < x && x < x3 + blockWidth  &&  y4 < y && y < y4 + blockWidth) return 14
-        if (x4 < x && x < x4 + blockWidth  &&  y4 < y && y < y4 + blockWidth) return 15
+        if (x1 < x && x < x1 + blockWidthX  &&  y4 < y && y < y4 + blockWidthY) return 12
+        if (x2 < x && x < x2 + blockWidthX  &&  y4 < y && y < y4 + blockWidthY) return 13
+        if (x3 < x && x < x3 + blockWidthX  &&  y4 < y && y < y4 + blockWidthY) return 14
+        if (x4 < x && x < x4 + blockWidthX  &&  y4 < y && y < y4 + blockWidthY) return 15
     
-        if (x1 < x && x < x1 + blockWidth  &&  y5 < y && y < y5 + blockWidth) return 16
-        
-        
+        if (x1 < x && x < x1 + blockWidthX  &&  y5 < y && y < y5 + blockWidthY) return 16
         
         return -1
     }

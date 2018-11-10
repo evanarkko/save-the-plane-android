@@ -152,7 +152,7 @@ export default class HomeScreen extends React.Component {
                     const top3Selections = await Api.getSelections(this.state.userId)
                     console.log("wtf")
                     console.log(top3Selections)
-                    this.props.navigation.navigate('Suggestion', {userId: this.state.userId, selections: top3Selections})
+                    top3Selections && this.props.navigation.navigate('Suggestion', {userId: this.state.userId, selections: top3Selections})
                     break
                 case 3:
                     this.setState({limbo: true, limbo2: true})
