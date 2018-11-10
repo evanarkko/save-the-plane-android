@@ -33,7 +33,8 @@ export default class Draggable extends Component {
                 this.props.onRelease(evt.nativeEvent.pageX, evt.nativeEvent.pageY)
                 Animated.spring(this.state.pan, {
                     toValue: { x: 0, y: 0 },
-                    friction: 5
+                    speed: 525,
+                    bounciness: 0
                 }).start();
                 this.setState({elevated: false})
             }
@@ -59,12 +60,12 @@ export default class Draggable extends Component {
     }
 }
 
-let CIRCLE_RADIUS = 40;
+let CIRCLE_RADIUS = 79;
 let styles = StyleSheet.create({
     circle: {
         backgroundColor: "skyblue",
-        width: CIRCLE_RADIUS * 2,
-        height: CIRCLE_RADIUS * 2,
+        width: CIRCLE_RADIUS,
+        height: CIRCLE_RADIUS,
         borderRadius: 10
     }
 });
