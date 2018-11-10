@@ -11,7 +11,16 @@ export const makeRoomInstert = (array, x, y) => {
         return array.map((val, i) => {
             if(i === y) return array[x]
             if(i > y && i <= x) return array[i-1]
+            return val
         })
     }
+    if(x < y) {
+        return array.map((val, i) => {
+            if(i === y) return array[x]
+            if(i < y && i >= x) return array[i+1]
+            return val
+        })
+    }
+    return  swapSpots(array, x, y)
     
 }

@@ -6,7 +6,7 @@ import Config from '../logic/Config'
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
 import DraggableImage from '../components/DraggableImage'
-import {swapSpots} from "../logic/ArrayLogic";
+import {swapSpots, makeRoomInstert} from "../logic/ArrayLogic";
 import {Dimensions} from "react-native"
 
 const hardWidth = 360
@@ -81,11 +81,11 @@ export default class HomeScreen extends React.Component {
     }
     
     swapSelections = (x, y) => {
-        this.setState({selections: swapSpots(this.state.selections, x, y)})
+        this.setState({selections: makeRoomInstert(this.state.selections, x, y)})
     }
     
     onBlockRelease = (x, y, iDragged) => {
-        if (this.coordinatesToIndex(x, y) > -1) this.swapSelections(this.coordinatesToIndex(x, y), iDragged)
+        if (this.coordinatesToIndex(x, y) > -1) this.swapSelections(iDragged, this.coordinatesToIndex(x, y))
     }
     
     render() {
