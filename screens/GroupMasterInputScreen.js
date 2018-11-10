@@ -85,7 +85,9 @@ const styles = StyleSheet.create({
         margin: 10
     },
     subHeader: {
+        marginTop: 8,
         marginLeft: 10,
+        fontSize: 18,
         fontWeight: "bold",
         color: Config.Color.PRIMARY
     },

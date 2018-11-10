@@ -242,7 +242,8 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 5,
         fontSize: 15,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        color: "black"
     },
     pickArea: {
         flex: 8

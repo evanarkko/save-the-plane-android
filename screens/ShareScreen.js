@@ -92,7 +92,7 @@ export default class HomeScreen extends React.Component {
                                     this.setState({new_email: ""})
                                 }
                             }}
-                            title="+"
+                            title="Add Member"
                             color={Config.Color.PRIMARY}
                         />
                     </View>
@@ -117,12 +117,20 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.opArea}>
                     <Button
                         onPress={async () => {
-                            const res = await Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
-                            this.props.navigation.goBack(null)
-                            this.props.navigation.goBack(null)
-                            this.props.navigation.goBack(null)
-                            this.saveIdToStorage(res)
-                            alert("You have created a new group. Your groupId is " + this.extractId(res))
+                            if(!this.state.emails[0]){
+                                alert("You haven't added anyone to your team yet...")
+                            }else if(Config.Dev){
+                                this.props.navigation.goBack(null)
+                                this.props.navigation.goBack(null)
+                                this.props.navigation.goBack(null)
+                            }else{
+                                const res = await Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
+                                this.props.navigation.goBack(null)
+                                this.props.navigation.goBack(null)
+                                this.props.navigation.goBack(null)
+                                this.saveIdToStorage(res)
+                                alert("You have created a new group. Your groupId is " + this.extractId(res))
+                            }
                         }}
                         title="Invite all"
                         color={Config.Color.PRIMARY}

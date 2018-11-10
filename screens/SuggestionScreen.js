@@ -1,7 +1,7 @@
 import React from 'react'
 import {StyleSheet, Text, View, Button, TextInput} from 'react-native'
 import ScalableImage from '../components/ScalableImage'
-import VC from '../logic/Config'
+import Config from '../logic/Config'
 import Api from '../api/Api'
 import Requirer from '../logic/Requirer'
 
@@ -17,7 +17,7 @@ export default class SuggestionScreen extends React.Component {
     static navigationOptions = {
         title: 'Save the planet',
         headerStyle: {
-            backgroundColor: VC.Color.PRIMARY,
+            backgroundColor: Config.Color.PRIMARY,
         },
         headerTintColor: 'white',
         headerTitleStyle: {
@@ -26,14 +26,14 @@ export default class SuggestionScreen extends React.Component {
     }
     
     render() {
+        const selections = Config.Dev ? [1, 2, 3] : this.props.navigation.state.params.selections
         return (
             <View style={styles.container}>
-                const selections = this.props.navigation.state.params.selections
                 <Text style={styles.headerText}>
                     Suggest solutions ( 15 min )
                 </Text>
                 <View style={styles.topView}>
-                    {this.props.navigation.state.params.selections ?
+                    {Config.Dev ?
                         [<ScalableImage onPress={() => this.setState({selectedIndex: 0})}
                                         style={[this.state.selectedIndex === 0 && styles.selectedImg, styles.img]}
                                         source={Requirer.dynamicImgRequire(selections[0])} width={80}/>,
@@ -71,18 +71,22 @@ export default class SuggestionScreen extends React.Component {
                 <View style={styles.opArea}>
                     <Button
                         onPress={() => {
-                            if (this.state.suggestions.filter(s => s).length === 3) {
-                                Api.sendSuggestions({
-                                    suggestions: this.state.suggestions,
-                                    userId: this.props.navigation.state.params.userId
-                                })
-                                this.props.navigation.goBack()
+                            if (!Config.Dev) {
+                                if (this.state.suggestions.filter(s => s).length === 3) {
+                                    Api.sendSuggestions({
+                                        suggestions: this.state.suggestions,
+                                        userId: this.props.navigation.state.params.userId
+                                    })
+                                    this.props.navigation.goBack()
+                                } else {
+                                    alert("Please write about all three causes")
+                                }
                             }else{
-                                alert("Please write about all three causes")
+                                this.props.navigation.goBack()
                             }
                         }}
                         title="Finished"
-                        color={VC.Color.PRIMARY}
+                        color={Config.Color.PRIMARY}
                     />
                 </View>
             </View>
@@ -94,7 +98,7 @@ export default class SuggestionScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: VC.Color.SECONDARY,
+        backgroundColor: Config.Color.SECONDARY,
         flexDirection: 'column'
     },
     topView: {
@@ -106,8 +110,8 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     selectedImg: {
-        borderWidth: 6,
-        borderColor: 'yellow'
+        borderWidth: 3,
+        borderColor: 'black'
     },
     suggestionInput: {
         height: 120,
@@ -115,7 +119,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         padding: 5,
-        borderColor: VC.Color.PRIMARY,
+        borderColor: Config.Color.PRIMARY,
     },
     headerText: {
         fontWeight: 'bold',

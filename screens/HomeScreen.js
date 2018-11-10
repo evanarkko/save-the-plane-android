@@ -77,9 +77,9 @@ export default class HomeScreen extends React.Component {
                             <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Your team is not finished suggesting yet...</Text> :
                             <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Your team is not finished selecting yet...</Text>
                         :
-                        <Text style={{fontFamily: 'Cochin', textAlign: 'center'}}>My team will help reach the Sustainable Development
+                        <Text style={styles.header}>My team will help reach the Sustainable Development
                             Goals
-                            2030?</Text>}
+                            2030</Text>}
                 
                 </View>
                 <View style={styles.middleView}>
@@ -97,7 +97,7 @@ export default class HomeScreen extends React.Component {
                             color={Config.Color.PRIMARY}
                         />
                     </View>
-                    <Text>or</Text>
+                    <Text style={styles.or}>or</Text>
                     <View style={{
                         flexDirection: 'row',
                         borderWidth: 2,
@@ -139,7 +139,8 @@ export default class HomeScreen extends React.Component {
     
     navigateDynamically = async () => {
         if (Config.Dev || this.state.termsAgreedUpon) {
-            switch (await Api.getGroupStatus(this.state.userId)) {
+            const status = Config.Dev ? parseInt(this.state.userId) : await Api.getGroupStatus(this.state.userId)
+            switch (status) {
                 case 0:
                     this.props.navigation.navigate('Selection', {userId: this.state.userId})
                     break
@@ -160,10 +161,14 @@ export default class HomeScreen extends React.Component {
                     //this.promptLimboAlert()
                     break
                 case 4:
-                    const results = await Api.getResults(this.state.userId)
-                    console.log(JSON.stringify(results))
-                    console.log(JSON.stringify({selections: [...Object.keys(results)], suggestions: results}))
-                    this.props.navigation.navigate('Results', {selections: [...Object.keys(results)], suggestions: results})
+                    if(Config.Dev){
+                        this.props.navigation.navigate('Results')
+                    }else{
+                        const results = await Api.getResults(this.state.userId)
+                        console.log(JSON.stringify(results))
+                        console.log(JSON.stringify({selections: [...Object.keys(results)], suggestions: results}))
+                        this.props.navigation.navigate('Results', {selections: [...Object.keys(results)], suggestions: results})
+                    }
                     break
         
             }
@@ -201,6 +206,16 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Config.Color.SECONDARY,
         alignItems: 'stretch'
+    },
+    header: {
+        fontFamily: 'Cochin',
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: "500"
+    },
+    or: {
+        fontWeight: "bold",
+        color: Config.Color.PRIMARY
     },
     topView: {
         flex: 1,
