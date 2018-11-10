@@ -2,7 +2,7 @@ import React from 'react'
 import {StyleSheet, Text, View, Button, Alert, TouchableOpacity} from 'react-native'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
-import Config from '../logic/Config'
+import Config, {explanationArray} from '../logic/Config'
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
 import DraggableImage from '../components/DraggableImage'
@@ -12,11 +12,14 @@ import {Dimensions} from "react-native"
 const hardWidth = 360
 const hardHeight = 598
 
+
+
 export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+            explainIndex: 0,
             scaleFactorX: hardWidth / Dimensions.get('window').width,
             scaleFactorY: hardHeight / Dimensions.get('window').height
         }
@@ -81,7 +84,7 @@ export default class HomeScreen extends React.Component {
     }
     
     swapSelections = (x, y) => {
-        this.setState({selections: makeRoomInstert(this.state.selections, x, y)})
+        this.setState({selections: makeRoomInstert(this.state.selections, x, y), explainIndex: y})
     }
     
     onBlockRelease = (x, y, iDragged) => {
@@ -102,6 +105,8 @@ export default class HomeScreen extends React.Component {
                         selections={this.state.selections}
                         onBlockRelease={this.onBlockRelease}
                         coordinateToIndex={this.coordinatesToIndex}
+                        explainIndex={this.state.explainIndex}
+                        setExplainIndex={(explainIndex) => this.setState({explainIndex})}
                     />
                 </View>
                 <View style={styles.opArea}>
@@ -153,7 +158,7 @@ export default class HomeScreen extends React.Component {
     }
 }
 
-const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex}) => {
+const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex, explainIndex, setExplainIndex}) => {
     let rows = []
     for (let y = 0; y < 5; y++) {
         rows.push(
@@ -165,6 +170,8 @@ const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coor
                     selections={selections}
                     onBlockRelease={onBlockRelease}
                     coordinateToIndex={coordinateToIndex}
+                    explainIndex={explainIndex}
+                    setExplainIndex={setExplainIndex}
                 />
             </View>
         )
@@ -176,7 +183,8 @@ const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coor
     )
 }
 
-const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex}) => {
+const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex, explainIndex, setExplainIndex}) => {
+    
     const width = 80
     let cols = []
     for (let x = 0; x < 4; x++) {
@@ -184,15 +192,28 @@ const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease
         const image =
             boxIndex < 18
                 ?
-                <DraggableImage index={selections[boxIndex - 1] - 1} onRelease={(x, y) => {
+                <DraggableImage
+                    onClick={() => {setExplainIndex(boxIndex-1)}}
+                    isBeingExplained={explainIndex === boxIndex-1}
+                    index={selections[boxIndex - 1] - 1}
+                    onRelease={(x, y) => {
                     onBlockRelease(x, y, boxIndex - 1)
-                }}/> /*<ScalableImage
-                    style={styles.image}
-                    source={Requirer.dynamicImgRequire(selections[boxIndex-1]-1)}
-                    width={width}/>*/
+                }}/>
+                : boxIndex === 18 ?
+                <Text style={styles.explanation}>{explanationArray[selections[explainIndex] - 1]}</Text>
                 : null
+        
         cols.push(
             <View key={x} style={styles.imageCol}>
+                {boxIndex < 4 &&
+                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'green'}]}>
+                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
+                </TouchableOpacity>}
+    
+                {boxIndex >= 15 && boxIndex <= 17 &&
+                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'red'}]}>
+                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
+                </TouchableOpacity>}
                 {image}
             
             
@@ -206,18 +227,11 @@ const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease
     )
 }
 
-/*{boxIndex < 4 &&
-                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'green'}]}>
-                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
-                </TouchableOpacity>}
-                
-                {boxIndex >= 15 && boxIndex <= 17 &&
-                <TouchableOpacity style={[styles.selectedImg, {borderColor: 'red'}]}>
-                    <Text style={styles.selectedIndex}>{boxIndex}</Text>
-                </TouchableOpacity>}*/
+/**/
 
 
 const styles = StyleSheet.create({
+    
     container: {
         flex: 1,
         backgroundColor: Config.Color.SECONDARY,
@@ -251,9 +265,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 3,
-        width: 85,
-        height: 85,
+        borderWidth: 5,
+        width: 90,
+        height: 90,
         borderRadius: 10,
         backgroundColor: 'rgba(255,255,255, 0.4)',
         position: 'absolute'
@@ -261,6 +275,15 @@ const styles = StyleSheet.create({
     selectedIndex: {
         fontWeight: '900',
         fontSize: 26
+    },
+    explanation: {
+        marginLeft: 5,
+        marginTop: 5,
+        paddingLeft: 5,
+        paddingTop: 5,
+        width: 250,
+        color: "black",
+        fontSize: 20
     },
     opArea: {
         height: 38,

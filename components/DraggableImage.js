@@ -6,6 +6,7 @@ import {
     Animated
 } from "react-native";
 import Requirer from "../logic/Requirer"
+import Config from '../logic/Config'
 
 export default class Draggable extends Component {
     constructor() {
@@ -23,6 +24,7 @@ export default class Draggable extends Component {
         // Initialize PanResponder with move handling
         this.panResponder = PanResponder.create({
             onPanResponderStart: (e, gestureState) => {
+                this.props.onClick && this.props.onClick()
                 this.setState({elevated: true})
             },
             onStartShouldSetPanResponder: (e, gesture) => true,
@@ -33,7 +35,7 @@ export default class Draggable extends Component {
                 this.props.onRelease(evt.nativeEvent.pageX, evt.nativeEvent.pageY)
                 Animated.spring(this.state.pan, {
                     toValue: { x: 0, y: 0 },
-                    speed: 525,
+                    speed: 1000,
                     bounciness: 0
                 }).start();
                 this.setState({elevated: false})
@@ -48,7 +50,9 @@ export default class Draggable extends Component {
     render() {
         const panStyle = {
             transform: this.state.pan.getTranslateTransform(),
-            zIndex: this.state.elevated ? 1 : 0
+            zIndex: this.state.elevated ? 1 : 0,
+            borderWidth: this.props.isBeingExplained ? 4 : 0,
+            
         }
         return (
             <Animated.Image
@@ -66,6 +70,7 @@ let styles = StyleSheet.create({
         backgroundColor: "skyblue",
         width: CIRCLE_RADIUS,
         height: CIRCLE_RADIUS,
-        borderRadius: 10
+        borderRadius: 10,
+        borderColor: "black"
     }
 });
