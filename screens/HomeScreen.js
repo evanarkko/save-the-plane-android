@@ -20,7 +20,7 @@ export default class HomeScreen extends React.Component {
     }
     
     static navigationOptions = {
-        title: 'Planet Action',
+        title: 'PlanetAction',
         headerStyle: {
             backgroundColor: Config.Color.PRIMARY,
         },
