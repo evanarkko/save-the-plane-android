@@ -71,6 +71,6 @@ let styles = StyleSheet.create({
         width: CIRCLE_RADIUS,
         height: CIRCLE_RADIUS,
         borderRadius: 10,
-        borderColor: "black"
+        borderColor: Config.Color.TEXT
     }
 });

@@ -21,7 +21,7 @@ export default class HomeScreen extends React.Component {
     }
     
     static navigationOptions = {
-        title: 'Create a Team',
+        title: 'Invite Team Members',
         headerStyle: {
             backgroundColor: Config.Color.PRIMARY,
         },
@@ -55,7 +55,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.headerText}>
-                    Your personal TOP 3 priorities:
+                    My TOP 3 priorities:
                 </Text>
                 <View style={styles.topView}>
                     {
@@ -70,7 +70,7 @@ export default class HomeScreen extends React.Component {
                     }
                 </View>
                 <Text style={styles.headerText}>
-                    Pick All Team Members:
+                    Add Team Members:
                 </Text>
                 <View style={styles.middleView}>
                     <View>
@@ -98,7 +98,7 @@ export default class HomeScreen extends React.Component {
                     </View>
                 </View>
                 <Text style={[styles.headerText]}>
-                    My Team
+                    Team Members To Be Invited
                 </Text>
                 <View>
                     <View style={{marginBottom: 6, marginLeft: 4}}>
@@ -132,7 +132,7 @@ export default class HomeScreen extends React.Component {
                                 alert("You have created a new group. Your groupId is " + this.extractId(res))
                             }
                         }}
-                        title="Invite all"
+                        title="Save and Send Invitations"
                         color={Config.Color.PRIMARY}
                     />
                 </View>
@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
+        paddingTop: 10
     },
     middleView: {
         flex: 2,
@@ -169,6 +170,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         margin: 5,
         marginTop: 10,
+        color: Config.Color.TEXT
     },
     input: {
         height: 40,

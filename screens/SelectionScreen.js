@@ -95,7 +95,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.instructions}>
-                    Select your priority for the goals. The orders of top 3 and bottom 3 are most important.
+                    Sort ALL symbols. Order from TOP = where your organization has made most impact to BOTTOM = least.
                 </Text>
                 
                 <View style={styles.pickArea}>
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
         padding: 5,
         fontSize: 15,
         fontWeight: "bold",
-        color: "black"
+        color: Config.Color.TEXT
     },
     pickArea: {
         flex: 8
@@ -271,7 +271,8 @@ const styles = StyleSheet.create({
         height: 90,
         borderRadius: 10,
         backgroundColor: 'rgba(255,255,255, 0.4)',
-        position: 'absolute'
+        position: 'absolute',
+        borderColor: "white"
     },
     selectedIndex: {
         fontWeight: '900',
@@ -283,8 +284,9 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingTop: 5,
         width: 250,
-        color: "black",
-        fontSize: 20
+        color: Config.Color.TEXT,
+        fontSize: 20,
+        fontWeight: "bold"
     },
     opArea: {
         height: 38,

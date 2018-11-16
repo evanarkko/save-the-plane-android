@@ -16,7 +16,7 @@ export default class GroupMasterInputScreen extends React.Component {
     }
     
     static navigationOptions = {
-        title: 'Start a Team',
+        title: 'Create Team Identity',
         headerStyle: {
             backgroundColor: Config.Color.PRIMARY,
         },
@@ -61,7 +61,7 @@ export default class GroupMasterInputScreen extends React.Component {
                                 this.props.navigation.navigate('Selection', {organizationType: this.state.organizationType, country: this.state.country, email: this.state.email})
                             }
                         }}
-                        title="Continue"
+                        title="Save and Continue"
                         color={Config.Color.PRIMARY}
                     />
                 </View>

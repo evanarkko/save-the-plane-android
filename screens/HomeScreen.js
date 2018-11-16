@@ -20,7 +20,7 @@ export default class HomeScreen extends React.Component {
     }
     
     static navigationOptions = {
-        title: 'Save The Planet',
+        title: 'Planet Action',
         headerStyle: {
             backgroundColor: Config.Color.PRIMARY,
         },
@@ -74,8 +74,8 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.topView}>
                     {this.state.limbo ?
                         this.state.limbo2 ?
-                            <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Your team is not finished suggesting yet...</Text> :
-                            <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Your team is not finished selecting yet...</Text>
+                            <Text style={styles.header}>Your team is not finished suggesting yet...</Text> :
+                            <Text style={styles.header}>Your team is not finished selecting yet...</Text>
                         :
                         <Text style={styles.header}>My team will help reach the Sustainable Development
                             Goals
@@ -108,7 +108,7 @@ export default class HomeScreen extends React.Component {
                     }}>
                         <TextInput
                             style={{height: 40, width: 180}}
-                            placeholder="Enter Team Key"
+                            placeholder="Paste Team Key Here"
                             keyboardType="numeric"
                             value={this.state.userId}
                             onChangeText={text => this.setState({userId: text})}
@@ -210,8 +210,9 @@ const styles = StyleSheet.create({
     header: {
         fontFamily: 'Cochin',
         textAlign: 'center',
-        fontSize: 16,
-        fontWeight: "500"
+        fontSize: 18,
+        fontWeight: "500",
+        color: Config.Color.TEXT
     },
     or: {
         fontWeight: "bold",

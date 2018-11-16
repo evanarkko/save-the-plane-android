@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     },
     selectedImg: {
         borderWidth: 3,
-        borderColor: 'black'
+        borderColor: Config.Color.TEXT
     },
     suggestionInput: {
         height: 120,
@@ -123,7 +123,8 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontWeight: 'bold',
-        margin: 5
+        margin: 5,
+        color: Config.Color.TEXT
     },
     opArea: {
         marginBottom: 10,

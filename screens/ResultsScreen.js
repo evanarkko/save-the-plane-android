@@ -10,7 +10,8 @@ import {
     AlertIOS,
     Platform,
     Linking,
-    Button
+    Button,
+    ScrollView
 } from 'react-native';
 import Config from '../logic/Config'
 import ScalableImage from '../components/ScalableImage'
@@ -57,17 +58,23 @@ export default class ResultsScreen extends React.Component {
         
         return (
             <View style={styles.container}>
-                <View style={styles.resultsView}>
+                <ScrollView style={styles.resultsView}>
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>
-                    <Text style={styles.answerSet}>{Config.Dev ? "mocktext" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[1]))} width={80}/>
-                    <Text style={styles.answerSet}>{Config.Dev ? "mocktext" : suggestions[selections[1]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[1]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>
-                    <Text style={styles.answerSet}>{Config.Dev ? "mocktext" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                </View>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                </ScrollView>
                 
                 
                 <View style={styles.opArea}>
@@ -103,17 +110,18 @@ const styles = StyleSheet.create({
         margin: 6
     },
     resultsView: {
-        flex: 9,
         borderWidth: 1,
-        alignItems: "center",
-        justifyContent: "space-around",
-        borderStyle: "dashed"
+        borderStyle: "dashed",
+        overflow: "scroll"
     },
     img: {
-        borderRadius: 10
+        borderRadius: 10,
+        alignSelf: "center",
+        marginTop: 15
     },
     answerSet: {
-        display: "flex"
+        display: "flex",
+        padding: 10
     },
     instructions: {
         margin: 4,
@@ -125,7 +133,7 @@ const styles = StyleSheet.create({
         height: 38,
         backgroundColor: Config.Color.SECONDARY,
         justifyContent: 'center',
-        flex: 1
+        
     }
     
 });
