@@ -35,7 +35,21 @@ export default class HomeScreen extends React.Component {
         headerTintColor: 'white',
         headerTitleStyle: {
             fontWeight: 'bold',
-        }
+        },
+        headerRight: <TouchableOpacity style={{
+            padding: 5,
+            paddingLeft: 7,
+            paddingRight: 7,
+            borderWidth: 1,
+            borderColor: Config.Color.TEXT,
+            borderRadius: 3,
+            color: Config.Color.TEXT,
+            marginRight: 8
+        }} onPress={() => alert('info')}><Text style={{
+            fontSize: 17,
+            fontWeight: "bold",
+            color: Config.Color.TEXT
+        }}>?</Text></TouchableOpacity>
     }
     
     
@@ -237,6 +251,13 @@ const styles = StyleSheet.create({
         backgroundColor: Config.Color.SECONDARY,
         alignItems: 'stretch',
         justifyContent: 'center',
+    },
+    infoButton: {
+        padding: 5,
+        borderWidth: 1,
+        borderColor: Config.Color.TEXT,
+        fontSize: 17,
+        fontWeight: "bold"
     },
     instructions: {
         flex: 1,

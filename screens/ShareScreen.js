@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, TextInput} from 'react-native'
+import {StyleSheet, Text, View, Button, TextInput, TouchableOpacity} from 'react-native'
 import emailValidator from 'email-validator'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
@@ -28,7 +28,21 @@ export default class HomeScreen extends React.Component {
         headerTintColor: 'white',
         headerTitleStyle: {
             fontWeight: 'bold',
-        }
+        },
+        headerRight: <TouchableOpacity style={{
+            padding: 5,
+            paddingLeft: 7,
+            paddingRight: 7,
+            borderWidth: 1,
+            borderColor: Config.Color.TEXT,
+            borderRadius: 3,
+            color: Config.Color.TEXT,
+            marginRight: 8
+        }} onPress={() => alert('info')}><Text style={{
+            fontSize: 17,
+            fontWeight: "bold",
+            color: Config.Color.TEXT
+        }}>?</Text></TouchableOpacity>
     }
     
     extractId = (res) => {
