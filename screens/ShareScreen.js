@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, TextInput, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, View, Button, TextInput, TouchableOpacity, ScrollView} from 'react-native'
 import emailValidator from 'email-validator'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
@@ -100,7 +100,9 @@ export default class HomeScreen extends React.Component {
                         <Button
                             onPress={() => {
                                 if (this.state.new_email) {
-                                    if (emailValidator.validate(this.state.new_email)) {
+                                    if(this.state.emails.length > 8) {
+                                        alert("The team is full")
+                                    } else if (emailValidator.validate(this.state.new_email)) {
                                         !this.state.emails.includes(this.state.new_email) && this.setState({emails: this.state.emails.concat(this.state.new_email)})
                                     } else {
                                         alert('email not valid')
@@ -114,10 +116,10 @@ export default class HomeScreen extends React.Component {
                     </View>
                 </View>
                 <Text style={[styles.headerText]}>
-                    Team Members To Be Invited
+                    Team Members To Be Invited:
                 </Text>
-                <View>
-                    <View style={{marginBottom: 6, marginLeft: 4}}>
+                <View style={styles.bottomView}>
+                    <ScrollView style={{marginBottom: 6, marginLeft: 4}}>
                         {this.state.emails.length !== 0
                             ?
                             this.state.emails.map((email, i) =>
@@ -127,8 +129,7 @@ export default class HomeScreen extends React.Component {
                                 </View>)
                             :
                             <Text style={{fontFamily: 'Cochin', marginLeft: 15}}>It is lonely here. . .</Text>}
-                    </View>
-                
+                    </ScrollView>
                 </View>
                 <View style={styles.opArea}>
                     <Button
@@ -163,19 +164,18 @@ const styles = StyleSheet.create({
         backgroundColor: Config.Color.SECONDARY,
     },
     topView: {
-        flex: 1,
+        flex: 1.3,
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        paddingTop: 10
+        justifyContent: 'space-around'
     },
     middleView: {
-        flex: 2,
+        flex: 1.5,
         alignItems: 'flex-start',
         justifyContent: 'space-around',
         flexDirection: 'row'
     },
     bottomView: {
-        flex: 4,
+        flex: 2.8,
         flexDirection: 'column'
     },
     img: {
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         margin: 5,
-        marginTop: 10,
+        marginTop: 15,
         color: Config.Color.TEXT
     },
     input: {
@@ -199,7 +199,9 @@ const styles = StyleSheet.create({
     },
     email: {
         marginLeft: 4,
-        marginBottom: 3
+        marginBottom: 3,
+        color: "black",
+        fontWeight: "300"
     },
     deleteButton: {
         fontWeight: 'bold',
