@@ -25,18 +25,20 @@ export default class GroupMasterInputScreen extends React.Component {
             fontWeight: 'bold',
         },
         headerRight: <TouchableOpacity style={{
-            padding: 5,
-            paddingLeft: 7,
-            paddingRight: 7,
+            padding: 4,
             borderWidth: 1,
-            borderColor: Config.Color.TEXT,
-            borderRadius: 3,
-            color: Config.Color.TEXT,
-            marginRight: 8
+            borderColor: "white",
+            borderRadius: 18,
+            width: 36,
+            height: 36,
+            color: "white",
+            marginRight: 8,
+            backgroundColor: "white"
         }} onPress={() => alert('info')}><Text style={{
-            fontSize: 17,
+            fontSize: 20,
             fontWeight: "bold",
-            color: Config.Color.TEXT
+            color: Config.Color.PRIMARY,
+            alignSelf: "center"
         }}>?</Text></TouchableOpacity>
     }
     
@@ -47,6 +49,13 @@ export default class GroupMasterInputScreen extends React.Component {
                     <TextInput
                         style={styles.input}
                         placeholder="My  email"
+                        onChangeText={text => this.setState({email: text})}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="My first name"
                         onChangeText={text => this.setState({email: text})}
                     />
                 </View>
