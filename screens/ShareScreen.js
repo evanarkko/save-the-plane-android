@@ -141,7 +141,9 @@ export default class HomeScreen extends React.Component {
                                 this.props.navigation.goBack(null)
                                 this.props.navigation.goBack(null)
                             }else{
+                                //deactivate button
                                 const res = await Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
+                                //(activate button)
                                 this.props.navigation.goBack(null)
                                 this.props.navigation.goBack(null)
                                 this.props.navigation.goBack(null)
