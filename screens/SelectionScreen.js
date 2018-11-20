@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, Alert, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, View, Button, Alert, TouchableOpacity, ScrollView, Modal} from 'react-native'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import Config, {explanationArray} from '../logic/Config'
@@ -8,50 +8,60 @@ import Convert from '../logic/Convert'
 import DraggableImage from '../components/DraggableImage'
 import {swapSpots, makeRoomInstert} from "../logic/ArrayLogic";
 import {Dimensions} from "react-native"
+import {groupMasterInputHelp, selectionHelp} from "../resources/HelpText";
 
 const hardWidth = 360
 const hardHeight = 598
-
 
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            helpModalVisible: false,
             selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
             explainIndex: 0,
             scaleFactorX: hardWidth / Dimensions.get('window').width,
             scaleFactorY: hardHeight / Dimensions.get('window').height
         }
-        console.log("width: " +  Dimensions.get('window').width) //MAKE DIMENSION ADJUSTMENTS WITH THIS (and height)
+        console.log("width: " + Dimensions.get('window').width) //MAKE DIMENSION ADJUSTMENTS WITH THIS (and height)
         console.log("height: " + Dimensions.get('window').height) //for x use (hardWidth/Dimensions.get('window').width) * x and so on
     }
     
-    static navigationOptions = {
-        title: 'Set My Priority',
-        headerStyle: {
-            backgroundColor: Config.Color.PRIMARY,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
-        headerRight: <TouchableOpacity style={{
-            padding: 4,
-            borderWidth: 1,
-            borderColor: "white",
-            borderRadius: 18,
-            width: 36,
-            height: 36,
-            color: "white",
-            marginRight: 8,
-            backgroundColor: "white"
-        }} onPress={() => alert('info')}><Text style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: Config.Color.PRIMARY,
-            alignSelf: "center"
-        }}>?</Text></TouchableOpacity>
+    static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
+        return {
+            title: 'Set My Priority',
+            headerStyle: {
+                backgroundColor: Config.Color.PRIMARY,
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerRight: <TouchableOpacity style={{
+                padding: 4,
+                borderWidth: 1,
+                borderColor: "white",
+                borderRadius: 18,
+                width: 36,
+                height: 36,
+                color: "white",
+                marginRight: 8,
+                backgroundColor: "white"
+            }} onPress={() => params.openHelpModal()}><Text style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: Config.Color.PRIMARY,
+                alignSelf: "center"
+            }}>?</Text></TouchableOpacity>
+        }
+    }
+    
+    componentWillMount = () => {
+        this.props.navigation.setParams({
+            openHelpModal: () => this.setState({helpModalVisible: true})
+        });
     }
     
     
@@ -60,41 +70,41 @@ export default class HomeScreen extends React.Component {
         const x2 = 110 * this.state.scaleFactorX
         const x3 = 195 * this.state.scaleFactorX
         const x4 = 284 * this.state.scaleFactorX
-    
-    
+        
+        
         const y1 = 130 * this.state.scaleFactorY
         const y2 = 210 * this.state.scaleFactorY
         const y3 = 300 * this.state.scaleFactorY
         const y4 = 378 * this.state.scaleFactorY
         const y5 = 455 * this.state.scaleFactorY
-    
+        
         const blockWidthX = 65 * this.state.scaleFactorX
         const blockWidthY = 65 * this.state.scaleFactorY
         
         
         //1st row
-        if (x1 < x && x < x1 + blockWidthX  &&  y1 < y && y < y1 + blockWidthY) return 0
-        if (x2 < x && x < x2 + blockWidthX  &&  y1 < y && y < y1 + blockWidthY) return 1
-        if (x3 < x && x < x3 + blockWidthX  &&  y1 < y && y < y1 + blockWidthY) return 2
-        if (x4 < x && x < x4 + blockWidthX  &&  y1 < y && y < y1 + blockWidthY) return 3
+        if (x1 < x && x < x1 + blockWidthX && y1 < y && y < y1 + blockWidthY) return 0
+        if (x2 < x && x < x2 + blockWidthX && y1 < y && y < y1 + blockWidthY) return 1
+        if (x3 < x && x < x3 + blockWidthX && y1 < y && y < y1 + blockWidthY) return 2
+        if (x4 < x && x < x4 + blockWidthX && y1 < y && y < y1 + blockWidthY) return 3
         
         //2nd..
-        if (x1 < x && x < x1 + blockWidthX  &&  y2 < y && y < y2 + blockWidthY) return 4
-        if (x2 < x && x < x2 + blockWidthX  &&  y2 < y && y < y2 + blockWidthY) return 5
-        if (x3 < x && x < x3 + blockWidthX  &&  y2 < y && y < y2 + blockWidthY) return 6
-        if (x4 < x && x < x4 + blockWidthX  &&  y2 < y && y < y2 + blockWidthY) return 7
-    
-        if (x1 < x && x < x1 + blockWidthX  &&  y3 < y && y < y3 + blockWidthY) return 8
-        if (x2 < x && x < x2 + blockWidthX  &&  y3 < y && y < y3 + blockWidthY) return 9
-        if (x3 < x && x < x3 + blockWidthX  &&  y3 < y && y < y3 + blockWidthY) return 10
-        if (x4 < x && x < x4 + blockWidthX  &&  y3 < y && y < y3 + blockWidthY) return 11
-    
-        if (x1 < x && x < x1 + blockWidthX  &&  y4 < y && y < y4 + blockWidthY) return 12
-        if (x2 < x && x < x2 + blockWidthX  &&  y4 < y && y < y4 + blockWidthY) return 13
-        if (x3 < x && x < x3 + blockWidthX  &&  y4 < y && y < y4 + blockWidthY) return 14
-        if (x4 < x && x < x4 + blockWidthX  &&  y4 < y && y < y4 + blockWidthY) return 15
-    
-        if (x1 < x && x < x1 + blockWidthX  &&  y5 < y && y < y5 + blockWidthY) return 16
+        if (x1 < x && x < x1 + blockWidthX && y2 < y && y < y2 + blockWidthY) return 4
+        if (x2 < x && x < x2 + blockWidthX && y2 < y && y < y2 + blockWidthY) return 5
+        if (x3 < x && x < x3 + blockWidthX && y2 < y && y < y2 + blockWidthY) return 6
+        if (x4 < x && x < x4 + blockWidthX && y2 < y && y < y2 + blockWidthY) return 7
+        
+        if (x1 < x && x < x1 + blockWidthX && y3 < y && y < y3 + blockWidthY) return 8
+        if (x2 < x && x < x2 + blockWidthX && y3 < y && y < y3 + blockWidthY) return 9
+        if (x3 < x && x < x3 + blockWidthX && y3 < y && y < y3 + blockWidthY) return 10
+        if (x4 < x && x < x4 + blockWidthX && y3 < y && y < y3 + blockWidthY) return 11
+        
+        if (x1 < x && x < x1 + blockWidthX && y4 < y && y < y4 + blockWidthY) return 12
+        if (x2 < x && x < x2 + blockWidthX && y4 < y && y < y4 + blockWidthY) return 13
+        if (x3 < x && x < x3 + blockWidthX && y4 < y && y < y4 + blockWidthY) return 14
+        if (x4 < x && x < x4 + blockWidthX && y4 < y && y < y4 + blockWidthY) return 15
+        
+        if (x1 < x && x < x1 + blockWidthX && y5 < y && y < y5 + blockWidthY) return 16
         
         return -1
     }
@@ -110,6 +120,28 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <Modal
+                    visible={this.state.helpModalVisible}
+                    animationType={'slide'}
+                    onRequestClose={() => this.setState({helpModalVisible: false})}
+                >
+                    <View style={styles.modalContainer}>
+                        <ScrollView>
+                            <View style={styles.innerContainer}>
+                                {selectionHelp.map((section, i) =>
+                                    <View key={section.title}>
+                                        <Text style={styles.modalSubHeader}>{section.title}</Text>
+                                        <Text>{section.text}</Text>
+                                    </View>
+                                )}
+                            </View>
+                            <Button
+                                onPress={() => this.setState({helpModalVisible: false})}
+                                title="Close modal"
+                            />
+                        </ScrollView>
+                    </View>
+                </Modal>
                 <Text style={styles.instructions}>
                     Sort ALL symbols. Order from TOP = where your organization has made most impact to BOTTOM = least.
                 </Text>
@@ -209,12 +241,14 @@ const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease
             boxIndex < 18
                 ?
                 <DraggableImage
-                    onClick={() => {setExplainIndex(boxIndex-1)}}
-                    isBeingExplained={explainIndex === boxIndex-1}
+                    onClick={() => {
+                        setExplainIndex(boxIndex - 1)
+                    }}
+                    isBeingExplained={explainIndex === boxIndex - 1}
                     index={selections[boxIndex - 1] - 1}
                     onRelease={(x, y) => {
-                    onBlockRelease(x, y, boxIndex - 1)
-                }}/>
+                        onBlockRelease(x, y, boxIndex - 1)
+                    }}/>
                 : boxIndex === 18 ?
                 <Text style={styles.explanation}>{explanationArray[selections[explainIndex] - 1]}</Text>
                 : null
@@ -225,7 +259,7 @@ const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease
                 <TouchableOpacity style={[styles.selectedImg, {borderColor: 'green'}]}>
                     <Text style={styles.selectedIndex}>{boxIndex}</Text>
                 </TouchableOpacity>}
-    
+                
                 {boxIndex >= 15 && boxIndex <= 17 &&
                 <TouchableOpacity style={[styles.selectedImg, {borderColor: 'red'}]}>
                     <Text style={styles.selectedIndex}>{boxIndex}</Text>
@@ -310,6 +344,22 @@ const styles = StyleSheet.create({
         color: Config.Color.TEXT,
         fontSize: 20,
         fontWeight: "bold"
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: Config.Color.SECONDARY,
+    },
+    innerContainer: {
+        alignItems: 'center',
+        margin: 10
+    },
+    modalSubHeader: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: 4,
+        marginTop: 10,
+        color: Config.Color.PRIMARY
     },
     opArea: {
         height: 38,

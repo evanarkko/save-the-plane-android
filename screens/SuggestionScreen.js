@@ -1,50 +1,83 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, TextInput, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Modal, ScrollView} from 'react-native'
 import ScalableImage from '../components/ScalableImage'
 import Config from '../logic/Config'
 import Api from '../api/Api'
 import Requirer from '../logic/Requirer'
+import {suggestionHelp} from "../resources/HelpText";
 
 export default class SuggestionScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            helpModalVisible: false,
             selectedIndex: 0,
             suggestions: ['', '', '']
         }
     }
     
-    static navigationOptions = {
-        title: 'Share Our Actions',
-        headerStyle: {
-            backgroundColor: Config.Color.PRIMARY,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
-        headerRight: <TouchableOpacity style={{
-            padding: 4,
-            borderWidth: 1,
-            borderColor: "white",
-            borderRadius: 18,
-            width: 36,
-            height: 36,
-            color: "white",
-            marginRight: 8,
-            backgroundColor: "white"
-        }} onPress={() => alert('info')}><Text style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: Config.Color.PRIMARY,
-            alignSelf: "center"
-        }}>?</Text></TouchableOpacity>
+    static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
+        return {
+            title: 'Share Our Actions',
+            headerStyle: {
+                backgroundColor: Config.Color.PRIMARY,
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerRight: <TouchableOpacity style={{
+                padding: 4,
+                borderWidth: 1,
+                borderColor: "white",
+                borderRadius: 18,
+                width: 36,
+                height: 36,
+                color: "white",
+                marginRight: 8,
+                backgroundColor: "white"
+            }} onPress={() => params.openHelpModal()}><Text style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: Config.Color.PRIMARY,
+                alignSelf: "center"
+            }}>?</Text></TouchableOpacity>
+        }
+    }
+    
+    componentWillMount = () => {
+        this.props.navigation.setParams({
+            openHelpModal: () => this.setState({helpModalVisible: true})
+        });
     }
     
     render() {
         const selections = Config.Dev ? [1, 2, 3] : this.props.navigation.state.params.selections
         return (
             <View style={styles.container}>
+                <Modal
+                    visible={this.state.helpModalVisible}
+                    animationType={'slide'}
+                    onRequestClose={() => this.setState({helpModalVisible: false})}
+                >
+                    <View style={styles.modalContainer}>
+                        <ScrollView>
+                            <View style={styles.innerContainer}>
+                                {suggestionHelp.map((section, i) =>
+                                    <View key={section.title}>
+                                        <Text style={styles.modalSubHeader}>{section.title}</Text>
+                                        <Text>{section.text}</Text>
+                                    </View>
+                                )}
+                            </View>
+                            <Button
+                                onPress={() => this.setState({helpModalVisible: false})}
+                                title="Close modal"
+                            />
+                        </ScrollView>
+                    </View>
+                </Modal>
                 <Text style={styles.headerText}>
                     Describe, very briefly, your best ideas and proven actions. Be specific. The goal is that other organizations can learn from you and follow your lead.
                 </Text>
@@ -142,6 +175,22 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 5,
         color: Config.Color.TEXT
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: Config.Color.SECONDARY,
+    },
+    innerContainer: {
+        alignItems: 'center',
+        margin: 10
+    },
+    modalSubHeader: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: 4,
+        marginTop: 10,
+        color: Config.Color.PRIMARY
     },
     opArea: {
         marginBottom: 10,

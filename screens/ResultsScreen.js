@@ -11,44 +11,57 @@ import {
     Platform,
     Linking,
     Button,
-    ScrollView
+    ScrollView,
+    Modal
 } from 'react-native';
 import Config from '../logic/Config'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
+import {resultHelp} from "../resources/HelpText";
 
 export default class ResultsScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Your results',
-        headerStyle: {
-            backgroundColor: Config.Color.PRIMARY,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
-        headerRight: <TouchableOpacity style={{
-            padding: 4,
-            borderWidth: 1,
-            borderColor: "white",
-            borderRadius: 18,
-            width: 36,
-            height: 36,
-            color: "white",
-            marginRight: 8,
-            backgroundColor: "white"
-        }} onPress={() => alert('info')}><Text style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: Config.Color.PRIMARY,
-            alignSelf: "center"
-        }}>?</Text></TouchableOpacity>
-    }
     constructor(props) {
         super(props);
         this.state = {
+            helpModalVisible: false,
             visible: false
         }
+    }
+    
+    static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
+        return {
+            title: 'Yur Results',
+            headerStyle: {
+                backgroundColor: Config.Color.PRIMARY,
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerRight: <TouchableOpacity style={{
+                padding: 4,
+                borderWidth: 1,
+                borderColor: "white",
+                borderRadius: 18,
+                width: 36,
+                height: 36,
+                color: "white",
+                marginRight: 8,
+                backgroundColor: "white"
+            }} onPress={() => params.openHelpModal()}><Text style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: Config.Color.PRIMARY,
+                alignSelf: "center"
+            }}>?</Text></TouchableOpacity>
+        }
+    }
+    
+    componentWillMount = () => {
+        this.props.navigation.setParams({
+            openHelpModal: () => this.setState({helpModalVisible: true})
+        });
     }
     
     ShareButton = () => <TouchableOpacity onPress={() => this.setState({visible: !this.state.visible})} style={styles.instructions}>
@@ -74,6 +87,28 @@ export default class ResultsScreen extends React.Component {
         
         return (
             <View style={styles.container}>
+                <Modal
+                    visible={this.state.helpModalVisible}
+                    animationType={'slide'}
+                    onRequestClose={() => this.setState({helpModalVisible: false})}
+                >
+                    <View style={styles.modalContainer}>
+                        <ScrollView>
+                            <View style={styles.innerContainer}>
+                                {resultHelp.map((section, i) =>
+                                    <View key={section.title}>
+                                        <Text style={styles.modalSubHeader}>{section.title}</Text>
+                                        <Text>{section.text}</Text>
+                                    </View>
+                                )}
+                            </View>
+                            <Button
+                                onPress={() => this.setState({helpModalVisible: false})}
+                                title="Close modal"
+                            />
+                        </ScrollView>
+                    </View>
+                </Modal>
                 <ScrollView style={styles.resultsView}>
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>
@@ -145,6 +180,22 @@ const styles = StyleSheet.create({
         padding: 8,
         backgroundColor: Config.Color.PRIMARY,
         borderRadius: 4
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: Config.Color.SECONDARY,
+    },
+    innerContainer: {
+        alignItems: 'center',
+        margin: 10
+    },
+    modalSubHeader: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: 4,
+        marginTop: 10,
+        color: Config.Color.PRIMARY
     },
     opArea: {
         height: 38,

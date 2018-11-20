@@ -4,10 +4,10 @@ import Config from "../logic/Config";
 import countries from "../resources/Countries"
 import {groupMasterInputHelp} from "../resources/HelpText";
 
-const organizationTypes = ["Private Sector", "National Government", "Regional Government","Local Government" ,"Association", "Other"]
+const organizationTypes = ["Private Sector", "National Government", "Regional Government", "Local Government", "Association", "Other"]
 
 export default class GroupMasterInputScreen extends React.Component {
-    constructor(){
+    constructor() {
         super()
         this.state = {
             helpModalVisible: false,
@@ -45,7 +45,8 @@ export default class GroupMasterInputScreen extends React.Component {
                 color: Config.Color.PRIMARY,
                 alignSelf: "center"
             }}>?</Text></TouchableOpacity>
-        }}
+        }
+    }
     
     componentWillMount = () => {
         this.props.navigation.setParams({
@@ -97,7 +98,7 @@ export default class GroupMasterInputScreen extends React.Component {
                     <Picker
                         selectedValue={this.state.organizationType}
                         onValueChange={(itemValue, itemIndex) => this.setState({organizationType: itemValue})}>
-                        {organizationTypes.map(ot => <Picker.Item key={ot} label={ot} value={ot} />)}
+                        {organizationTypes.map(ot => <Picker.Item key={ot} label={ot} value={ot}/>)}
                     </Picker>
                 </View>
                 <View>
@@ -105,7 +106,7 @@ export default class GroupMasterInputScreen extends React.Component {
                     <Picker
                         selectedValue={this.state.country}
                         onValueChange={(itemValue, itemIndex) => this.setState({country: itemValue})}>
-                        {countries.map(c => <Picker.Item key={c} label={c} value={c} />)}
+                        {countries.map(c => <Picker.Item key={c} label={c} value={c}/>)}
                     </Picker>
                 </View>
                 
@@ -113,8 +114,12 @@ export default class GroupMasterInputScreen extends React.Component {
                 <View style={styles.opArea}>
                     <Button
                         onPress={() => {
-                            if(Config.Dev || this.state.email) {
-                                this.props.navigation.navigate('Selection', {organizationType: this.state.organizationType, country: this.state.country, email: this.state.email})
+                            if (Config.Dev || this.state.email) {
+                                this.props.navigation.navigate('Selection', {
+                                    organizationType: this.state.organizationType,
+                                    country: this.state.country,
+                                    email: this.state.email
+                                })
                             }
                         }}
                         title="Save and Continue"

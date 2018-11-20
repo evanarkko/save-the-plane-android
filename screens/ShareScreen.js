@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, TextInput, TouchableOpacity, ScrollView} from 'react-native'
+import {StyleSheet, Text, View, Button, TextInput, TouchableOpacity, ScrollView, Modal} from 'react-native'
 import emailValidator from 'email-validator'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
@@ -8,43 +8,54 @@ import { NavigationActions } from 'react-navigation'
 import {AsyncStorage} from "react-native"
 import Api from '../api/Api'
 import Convert from '../logic/Convert'
+import {shareHelp} from "../resources/HelpText";
 
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            helpModalVisible: false,
             new_email: '',
             emails: []
         }
         
     }
     
-    static navigationOptions = {
-        title: 'Invite Team Members',
-        headerStyle: {
-            backgroundColor: Config.Color.PRIMARY,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
-        headerRight: <TouchableOpacity style={{
-            padding: 4,
-            borderWidth: 1,
-            borderColor: "white",
-            borderRadius: 18,
-            width: 36,
-            height: 36,
-            color: "white",
-            marginRight: 8,
-            backgroundColor: "white"
-        }} onPress={() => alert('info')}><Text style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: Config.Color.PRIMARY,
-            alignSelf: "center"
-        }}>?</Text></TouchableOpacity>
+    static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
+        return {
+            title: 'Invite Team Members',
+            headerStyle: {
+                backgroundColor: Config.Color.PRIMARY,
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerRight: <TouchableOpacity style={{
+                padding: 4,
+                borderWidth: 1,
+                borderColor: "white",
+                borderRadius: 18,
+                width: 36,
+                height: 36,
+                color: "white",
+                marginRight: 8,
+                backgroundColor: "white"
+            }} onPress={() => params.openHelpModal()}><Text style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: Config.Color.PRIMARY,
+                alignSelf: "center"
+            }}>?</Text></TouchableOpacity>
+        }
+    }
+    
+    componentWillMount = () => {
+        this.props.navigation.setParams({
+            openHelpModal: () => this.setState({helpModalVisible: true})
+        });
     }
     
     extractId = (res) => {
@@ -70,6 +81,28 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <Modal
+                    visible={this.state.helpModalVisible}
+                    animationType={'slide'}
+                    onRequestClose={() => this.setState({helpModalVisible: false})}
+                >
+                    <View style={styles.modalContainer}>
+                        <ScrollView>
+                            <View style={styles.innerContainer}>
+                                {shareHelp.map((section, i) =>
+                                    <View key={section.title}>
+                                        <Text style={styles.modalSubHeader}>{section.title}</Text>
+                                        <Text>{section.text}</Text>
+                                    </View>
+                                )}
+                            </View>
+                            <Button
+                                onPress={() => this.setState({helpModalVisible: false})}
+                                title="Close modal"
+                            />
+                        </ScrollView>
+                    </View>
+                </Modal>
                 <Text style={styles.headerText}>
                     My TOP 3 priorities:
                 </Text>
@@ -214,6 +247,22 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignSelf: 'flex-end',
         
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: Config.Color.SECONDARY,
+    },
+    innerContainer: {
+        alignItems: 'center',
+        margin: 10
+    },
+    modalSubHeader: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: 4,
+        marginTop: 10,
+        color: Config.Color.PRIMARY
     },
     opArea: {
         marginTop:25,
