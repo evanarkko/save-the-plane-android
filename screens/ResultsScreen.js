@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     },
     answerSet: {
         display: "flex",
-        padding: 10
+        padding: 10,
+        color: Config.Color.TEXT
     },
     instructions: {
         margin: 4,

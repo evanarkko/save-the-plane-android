@@ -115,15 +115,15 @@ export default class HomeScreen extends React.Component {
                         />
                     </View>
                 </View>
-                <Text style={[styles.headerText]}>
+                <Text style={[styles.headerText, {fontSize: 16}]}>
                     Team Members To Be Invited:
                 </Text>
                 <View style={styles.bottomView}>
-                    <ScrollView style={{marginBottom: 6, marginLeft: 4}}>
+                    <ScrollView style={{backgroundColor: "#e5ddc5"}}>
                         {this.state.emails.length !== 0
                             ?
                             this.state.emails.map((email, i) =>
-                                <View key={email} style={{flexDirection: 'row', marginBottom: 6}}>
+                                <View key={email} style={{flexDirection: 'row', marginTop: 6}}>
                                     <Text onPress={() => this.deleteEmail(i)} style={styles.deleteButton}>-</Text>
                                     <Text style={styles.email}>{email}</Text>
                                 </View>)
@@ -184,16 +184,17 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     headerText: {
+        flex: 0.6,
         fontWeight: 'bold',
-        fontSize: 24,
-        margin: 5,
+        fontSize: 22,
         marginTop: 15,
-        color: Config.Color.TEXT
+        color: Config.Color.TEXT,
+        alignSelf: 'center'
     },
     input: {
         height: 40,
         width: 180,
-        marginTop: 5,
+        marginTop: 3,
         borderWidth: 1,
         borderRadius: 5,
         borderColor: Config.Color.PRIMARY,

@@ -1,9 +1,10 @@
 import React from 'react'
-import {StyleSheet, Text, View, Button, TextInput, Alert, Modal, ScrollView, AsyncStorage, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, View, Button, TextInput, Alert, Modal, ScrollView, AsyncStorage, TouchableOpacity, Linking} from 'react-native'
 import CheckBox from 'react-native-checkbox'
 import Config from '../logic/Config'
 import Api from '../api/Api'
 import Content from '../resources/Content'
+import {homeHelp} from "../resources/HelpText";
 
 const termsOfUseText = Content.english.termsOfUse
 
@@ -11,6 +12,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            helpModalVisible: false,
             termsModalVisible: false,
             termsAgreedUpon: false,
             limbo: false,
@@ -19,35 +21,42 @@ export default class HomeScreen extends React.Component {
         }
     }
     
-    static navigationOptions = {
-        title: 'PlanetAction',
-        headerStyle: {
-            backgroundColor: Config.Color.PRIMARY,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
-        headerRight: <TouchableOpacity style={{
-            padding: 4,
-            borderWidth: 1,
-            borderColor: "white",
-            borderRadius: 18,
-            width: 36,
-            height: 36,
-            color: "white",
-            marginRight: 8,
-            backgroundColor: "white"
-        }} onPress={() => alert('info')}><Text style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: Config.Color.PRIMARY,
-            alignSelf: "center"
-        }}>?</Text></TouchableOpacity>
-    }
+    static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
+        return {
+            title: 'PlanetAction',
+            headerStyle: {
+                backgroundColor: Config.Color.PRIMARY,
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerRight: <TouchableOpacity style={{
+                padding: 4,
+                borderWidth: 1,
+                borderColor: "white",
+                borderRadius: 18,
+                width: 36,
+                height: 36,
+                color: "white",
+                marginRight: 8,
+                backgroundColor: "white"
+            }} onPress={() => params.openHelpModal()}><Text style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: Config.Color.PRIMARY,
+                alignSelf: "center"
+            }}>?</Text></TouchableOpacity>
+        }}
+    
+    
     
     componentWillMount = async () => {
         this.setState({userId: await this.getIdFromStorage()})
+        this.props.navigation.setParams({
+            openHelpModal: () => this.setState({helpModalVisible: true})
+        });
     }
     
     getIdFromStorage = async () => {
@@ -87,6 +96,30 @@ export default class HomeScreen extends React.Component {
                         </ScrollView>
                     </View>
                 </Modal>
+                <Modal
+                    visible={this.state.helpModalVisible}
+                    animationType={'slide'}
+                    onRequestClose={() => this.setState({helpModalVisible: false})}
+                >
+                    <View style={styles.modalContainer}>
+                        <ScrollView>
+                            <View style={styles.innerContainer}>
+                                {homeHelp.map((section, i) =>
+                                    <View key={section.title}>
+                                        <Text style={styles.modalSubHeader}>{section.title}</Text>
+                                        <Text>{section.text}</Text>
+                                        {i === 2 && <Text style={{color: "blue", textDecorationLine: "underline"}} onPress={() => Linking.openURL("https://www.un.org/sustainabledevelopment/sustainable-development-goals/")}>https://www.un.org/sustainabledevelopment/sustainable-development-goals/</Text>}
+                                    </View>
+                                )}
+                            </View>
+                            <Button
+                                onPress={() => this.setState({helpModalVisible: false})}
+                                title="Close modal"
+                            />
+                        </ScrollView>
+                    </View>
+                </Modal>
+                
                 <View style={styles.topView}>
                     {this.state.limbo ?
                         this.state.limbo2 ?
@@ -139,7 +172,7 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.bottomView}>
                     <View style={styles.consentContainer}>
                         <Text style={{fontSize: 8, maxWidth: '50%'}}>I accept to publicly share all our ideas and
-                            agree to the <Text style={{textDecorationLine: 'underline'}}
+                            agree to the <Text style={{textDecorationLine: 'underline', fontWeight: "bold"}}
                                                onPress={() => this.setState({termsModalVisible: true})}>terms of
                                 use</Text>
                         </Text>

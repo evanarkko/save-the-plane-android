@@ -1,54 +1,87 @@
 import React from 'react'
-import {StyleSheet, TextInput, Text, View, Button, Picker, TouchableOpacity} from 'react-native'
+import {StyleSheet, TextInput, Text, View, Button, Picker, TouchableOpacity, Modal, ScrollView} from 'react-native'
 import Config from "../logic/Config";
+import countries from "../resources/Countries"
+import {groupMasterInputHelp} from "../resources/HelpText";
 
-const organizationTypes = ["Private", "State", "Municipal", "Association", "Other"]
-const countries = ["Finland", "Iceland", "Norway", "Sweden"]
+const organizationTypes = ["Private Sector", "National Government", "Regional Government","Local Government" ,"Association", "Other"]
 
 export default class GroupMasterInputScreen extends React.Component {
     constructor(){
         super()
         this.state = {
+            helpModalVisible: false,
             email: "",
-            organizationType: "",
-            country: ""
+            firstName: "",
+            organizationType: "Private Sector",
+            country: "Finland"
         }
     }
     
-    static navigationOptions = {
-        title: 'Create Team Identity',
-        headerStyle: {
-            backgroundColor: Config.Color.PRIMARY,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
-        headerRight: <TouchableOpacity style={{
-            padding: 4,
-            borderWidth: 1,
-            borderColor: "white",
-            borderRadius: 18,
-            width: 36,
-            height: 36,
-            color: "white",
-            marginRight: 8,
-            backgroundColor: "white"
-        }} onPress={() => alert('info')}><Text style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: Config.Color.PRIMARY,
-            alignSelf: "center"
-        }}>?</Text></TouchableOpacity>
+    static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
+        return {
+            title: 'Create Team Identity',
+            headerStyle: {
+                backgroundColor: Config.Color.PRIMARY,
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerRight: <TouchableOpacity style={{
+                padding: 4,
+                borderWidth: 1,
+                borderColor: "white",
+                borderRadius: 18,
+                width: 36,
+                height: 36,
+                color: "white",
+                marginRight: 8,
+                backgroundColor: "white"
+            }} onPress={() => params.openHelpModal()}><Text style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: Config.Color.PRIMARY,
+                alignSelf: "center"
+            }}>?</Text></TouchableOpacity>
+        }}
+    
+    componentWillMount = () => {
+        this.props.navigation.setParams({
+            openHelpModal: () => this.setState({helpModalVisible: true})
+        });
     }
     
     render() {
         return (
             <View style={styles.container}>
+                <Modal
+                    visible={this.state.helpModalVisible}
+                    animationType={'slide'}
+                    onRequestClose={() => this.setState({helpModalVisible: false})}
+                >
+                    <View style={styles.modalContainer}>
+                        <ScrollView>
+                            <View style={styles.innerContainer}>
+                                {groupMasterInputHelp.map((section, i) =>
+                                    <View key={section.title}>
+                                        <Text style={styles.modalSubHeader}>{section.title}</Text>
+                                        <Text>{section.text}</Text>
+                                    </View>
+                                )}
+                            </View>
+                            <Button
+                                onPress={() => this.setState({helpModalVisible: false})}
+                                title="Close modal"
+                            />
+                        </ScrollView>
+                    </View>
+                </Modal>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder="My  email"
+                        placeholder="My email"
                         onChangeText={text => this.setState({email: text})}
                     />
                 </View>
@@ -56,7 +89,7 @@ export default class GroupMasterInputScreen extends React.Component {
                     <TextInput
                         style={styles.input}
                         placeholder="My first name"
-                        onChangeText={text => this.setState({email: text})}
+                        onChangeText={text => this.setState({firstName: text})}
                     />
                 </View>
                 <View>
@@ -117,6 +150,22 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         flexGrow: 1
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: Config.Color.SECONDARY,
+    },
+    innerContainer: {
+        alignItems: 'center',
+        margin: 10
+    },
+    modalSubHeader: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: 4,
+        marginTop: 10,
+        color: Config.Color.PRIMARY
     },
     opArea: {
         height: 38,

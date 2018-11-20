@@ -15,7 +15,7 @@ export default class SuggestionScreen extends React.Component {
     }
     
     static navigationOptions = {
-        title: 'Save the planet',
+        title: 'Share Our Actions',
         headerStyle: {
             backgroundColor: Config.Color.PRIMARY,
         },
@@ -46,7 +46,7 @@ export default class SuggestionScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.headerText}>
-                    Suggest solutions ( 15 min )
+                    Describe, very briefly, your best ideas and proven actions. Be specific. The goal is that other organizations can learn from you and follow your lead.
                 </Text>
                 <View style={styles.topView}>
                     {Config.Dev ?
@@ -74,8 +74,9 @@ export default class SuggestionScreen extends React.Component {
                 <View>
                     <TextInput
                         style={styles.suggestionInput}
-                        placeholder="How could we support this?"
+                        placeholder="WHAT did we do? HOW did it help? Be specific. Be brief."
                         multiline={true}
+                        numberOfLines={6}
                         onChangeText={(text) => {
                             const suggestions = this.state.suggestions
                                 .map((suggestion, i) => i === this.state.selectedIndex ? text : suggestion)
@@ -101,7 +102,7 @@ export default class SuggestionScreen extends React.Component {
                                 this.props.navigation.goBack()
                             }
                         }}
-                        title="Finished"
+                        title="SAVE AND SHARE RESULTS"
                         color={Config.Color.PRIMARY}
                     />
                 </View>
@@ -126,16 +127,16 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     selectedImg: {
-        borderWidth: 3,
+        borderWidth: 4,
         borderColor: Config.Color.TEXT
     },
     suggestionInput: {
-        height: 120,
         margin: 10,
         borderWidth: 1,
         borderRadius: 5,
         padding: 5,
         borderColor: Config.Color.PRIMARY,
+        color: "black"
     },
     headerText: {
         fontWeight: 'bold',
