@@ -17,7 +17,8 @@ export default class HomeScreen extends React.Component {
         this.state = {
             helpModalVisible: false,
             new_email: '',
-            emails: []
+            emails: [],
+            isButtonDisabled: false
         }
         
     }
@@ -166,6 +167,7 @@ export default class HomeScreen extends React.Component {
                 </View>
                 <View style={styles.opArea}>
                     <Button
+                        disabled={this.state.isButtonDisabled}
                         onPress={async () => {
                             if(!this.state.emails[0]){
                                 alert("You haven't added anyone to your team yet...")
@@ -175,7 +177,9 @@ export default class HomeScreen extends React.Component {
                                 this.props.navigation.goBack(null)
                             }else{
                                 //deactivate button
+                                this.setState({isButtonDisabled: true})
                                 const res = await Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
+                                this.setState({isButtonDisabled: false})
                                 //(activate button)
                                 this.props.navigation.goBack(null)
                                 this.props.navigation.goBack(null)
