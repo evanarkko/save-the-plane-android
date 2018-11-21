@@ -188,7 +188,8 @@ export default class HomeScreen extends React.Component {
     
     navigateDynamically = async () => {
         if (Config.Dev || this.state.termsAgreedUpon) {
-            const status = Config.Dev ? parseInt(this.state.userId) : await Api.getGroupStatus(this.state.userId)
+            const data = Config.Dev ? parseInt(this.state.userId) : await Api.getGroupStatus(this.state.userId)
+            const status = data.status
             switch (status) {
                 case 0:
                     this.props.navigation.navigate('Selection', {userId: this.state.userId})
@@ -196,6 +197,11 @@ export default class HomeScreen extends React.Component {
                 case 1://limbo
                     this.setState({limbo: true})
                     setTimeout(() => (this.setState({limbo: false})), 4000)
+                    if(data.master) {
+                        console.log("master")
+                    }else{
+                        console.log("notmaster")
+                    }
                     //this.promptLimboAlert()
                     break
                 case 2:
@@ -207,13 +213,19 @@ export default class HomeScreen extends React.Component {
                 case 3:
                     this.setState({limbo: true, limbo2: true})
                     setTimeout(() => (this.setState({limbo: false, limbo2: false})), 4000)
+                    if(data.master) {
+                        console.log("master")
+                    }else{
+                        console.log("notmaster")
+                    }
                     //this.promptLimboAlert()
                     break
                 case 4:
                     if(Config.Dev){
                         this.props.navigation.navigate('Results')
                     }else{
-                        const results = await Api.getResults(this.state.userId)
+                        const data = await Api.getResults(this.state.userId)
+                        const results = JSON.parse(data.results)
                         console.log(JSON.stringify(results))
                         console.log(JSON.stringify({selections: [...Object.keys(results)], suggestions: results}))
                         this.props.navigation.navigate('Results', {selections: [...Object.keys(results)], suggestions: results})

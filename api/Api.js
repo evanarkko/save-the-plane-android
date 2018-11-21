@@ -9,7 +9,7 @@ const sendSelections = async (data) => {//send ordered list of 17 integers, init
     return res
 }
 
-const endPoll = async (groupId) => {//Only done by groupmaster. Possibly not implemented in 1st version
+const killGroup = async (groupId) => {//Only done by groupmaster. Possibly not implemented in 1st version
     const res = await axios.post('/endpoint',
         {
             groupId: groupId
@@ -20,7 +20,7 @@ const endPoll = async (groupId) => {//Only done by groupmaster. Possibly not imp
 const getGroupStatus = async (userId) => {//get group status. E.g. is it time to select goals, suggest solutions for top3 or view results
     const res = await axios.get(`${baseUrl}/group-status/${userId}`)
     console.log(res.data.status)
-    return res.data.status
+    return res.data
 }
 
 
@@ -56,8 +56,9 @@ const getSelections = async (userId) => {
 
 const getResults = async (userId) => {
     const res = await axios.get(`${baseUrl}/get-results/${userId}`)
+    console.log(res.data)
     return res.data
 }
 
-export default {sendSelections, endPoll, getGroupStatus, groupGenesis, sendSuggestions, getSelections, getResults}
+export default {sendSelections, killGroup, getGroupStatus, groupGenesis, sendSuggestions, getSelections, getResults}
 

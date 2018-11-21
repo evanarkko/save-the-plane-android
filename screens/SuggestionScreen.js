@@ -53,7 +53,8 @@ export default class SuggestionScreen extends React.Component {
     }
     
     render() {
-        const selections = Config.Dev ? [1, 2, 3] : this.props.navigation.state.params.selections
+        const selections = Config.Dev ? [1, 2, 3] : this.props.navigation.state.params.selections.status
+        console.log(selections)
         return (
             <View style={styles.container}>
                 <Modal
@@ -95,13 +96,13 @@ export default class SuggestionScreen extends React.Component {
                         :
                         [<ScalableImage onPress={() => this.setState({selectedIndex: 0})}
                                         style={[this.state.selectedIndex === 0 && styles.selectedImg, styles.img]}
-                                        source={require('../prototypeImages/goal_1.jpg')} width={80}/>,
+                                        source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>,
                             <ScalableImage onPress={() => this.setState({selectedIndex: 1})}
                                            style={[this.state.selectedIndex === 1 && styles.selectedImg, styles.img]}
-                                           source={require('../prototypeImages/goal_2.jpg')} width={80}/>,
+                                           source={Requirer.dynamicImgRequire(parseInt(selections[1]))} width={80}/>,
                             <ScalableImage onPress={() => this.setState({selectedIndex: 2})}
                                            style={[this.state.selectedIndex === 2 && styles.selectedImg, styles.img]}
-                                           source={require('../prototypeImages/goal_3.jpg')} width={80}/>]}
+                                           source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>]}
                 
                 </View>
                 <View>

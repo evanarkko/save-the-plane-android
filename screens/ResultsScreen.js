@@ -25,7 +25,8 @@ export default class ResultsScreen extends React.Component {
         super(props);
         this.state = {
             helpModalVisible: false,
-            visible: false
+            visible: false,
+            imageUri: ""
         }
     }
     
@@ -66,7 +67,7 @@ export default class ResultsScreen extends React.Component {
     }
     
     onCapture = uri => {
-        console.log("do something with ", uri);
+        this.setState({imageUri: uri})
     }
     
     ShareButton = () => <TouchableOpacity onPress={() => this.setState({visible: !this.state.visible})} style={styles.instructions}>
@@ -87,7 +88,7 @@ export default class ResultsScreen extends React.Component {
         const shareUrl = "https://www.youtube.com"
         /*GENERATED / FROM BACKEND*/
         
-        const linkedinURL = `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`
+        const linkedinURL = `https://www.linkedin.com/shareArticle?mini=true&source=`
         
         
         return (
@@ -121,22 +122,16 @@ export default class ResultsScreen extends React.Component {
                                    source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>
                     <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[0])]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[1]))} width={80}/>
                     <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[1])]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[1]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>
                     <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[2])]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     
                     <Text>www.planetaction.net</Text>
                 </ScrollView>
@@ -147,23 +142,17 @@ export default class ResultsScreen extends React.Component {
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>
                     <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[0])]}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text style={styles.answer}>{sug + "\n\n"}</Text>)}</Text>
         
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[1]))} width={80}/>
                     <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[1])]}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[1]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[1]].map(sug => <Text style={styles.answer}>{sug + "\n\n"}</Text>)}</Text>
         
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>
                     <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[2])]}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text style={styles.answer}>{sug + "\n\n"}</Text>)}</Text>
         
                     <Text>www.planetaction.net</Text>
                 </ScrollView>
@@ -183,7 +172,7 @@ export default class ResultsScreen extends React.Component {
                             color={Config.Color.PRIMARY}
                             onPress={() => {
                                 setTimeout(() => {
-                                    Linking.openURL(linkedinURL)
+                                    Linking.openURL(linkedinURL + "" + this.state.imageUri)
                                 }, 300);
                             }}>Linkedin</Button>]
                 }
@@ -222,9 +211,12 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     answerSet: {
-        display: "flex",
         padding: 10,
-        color: Config.Color.TEXT
+        color: Config.Color.TEXT,
+        justifyContent: "space-between"
+    },
+    answer: {
+        marginBottom: 10
     },
     instructions: {
         margin: 4,
