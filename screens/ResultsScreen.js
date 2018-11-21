@@ -131,6 +131,8 @@ export default class ResultsScreen extends React.Component {
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    
+                    <Text>www.planetaction.net</Text>
                 </ScrollView>
                 
                 
