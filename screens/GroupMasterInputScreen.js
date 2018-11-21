@@ -83,6 +83,7 @@ export default class GroupMasterInputScreen extends React.Component {
                     <TextInput
                         style={styles.input}
                         placeholder="My email"
+                        keyboardType="email-address"
                         onChangeText={text => this.setState({email: text})}
                     />
                 </View>
