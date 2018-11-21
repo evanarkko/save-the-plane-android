@@ -31,7 +31,7 @@ export default class ResultsScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         const {params = {}} = navigation.state;
         return {
-            title: 'Your Results',
+            title: 'Share Our Results',
             headerStyle: {
                 backgroundColor: Config.Color.PRIMARY,
             },
