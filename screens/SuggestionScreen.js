@@ -96,13 +96,13 @@ export default class SuggestionScreen extends React.Component {
                         :
                         [<ScalableImage onPress={() => this.setState({selectedIndex: 0})}
                                         style={[this.state.selectedIndex === 0 && styles.selectedImg, styles.img]}
-                                        source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>,
+                                        source={Requirer.dynamicImgRequire(parseInt(selections[0])-1)} width={80}/>,
                             <ScalableImage onPress={() => this.setState({selectedIndex: 1})}
                                            style={[this.state.selectedIndex === 1 && styles.selectedImg, styles.img]}
-                                           source={Requirer.dynamicImgRequire(parseInt(selections[1]))} width={80}/>,
+                                           source={Requirer.dynamicImgRequire(parseInt(selections[1])-1)} width={80}/>,
                             <ScalableImage onPress={() => this.setState({selectedIndex: 2})}
                                            style={[this.state.selectedIndex === 2 && styles.selectedImg, styles.img]}
-                                           source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>]}
+                                           source={Requirer.dynamicImgRequire(parseInt(selections[2])-1)} width={80}/>]}
                 
                 </View>
                 <View>
