@@ -31,7 +31,7 @@ const groupGenesis = async (data) => {
         addresses: data.email.concat("," + data.addresses),
         selections: Convert.arrayToCSV(data.selections),
         country: data.country,
-        organizationType: data.organizationType
+        organizationType: data.organizationType,
         firstName: data.firstName
     }
     console.log(JSON.stringify(genesisData))
