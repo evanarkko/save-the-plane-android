@@ -226,9 +226,11 @@ export default class HomeScreen extends React.Component {
                     }else{
                         const data = await Api.getResults(this.state.userId)
                         const results = JSON.parse(data.results)
+                        const org = data.org
+                        const country = data.country
                         console.log(JSON.stringify(results))
                         console.log(JSON.stringify({selections: [...Object.keys(results)], suggestions: results}))
-                        this.props.navigation.navigate('Results', {selections: [...Object.keys(results)], suggestions: results})
+                        this.props.navigation.navigate('Results', {selections: [...Object.keys(results)], suggestions: results, org, country})
                     }
                     break
         

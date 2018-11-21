@@ -77,6 +77,8 @@ export default class ResultsScreen extends React.Component {
     render() {
         const selections = Config.Dev ? [1, 2, 3] : this.props.navigation.state.params.selections
         const suggestions = Config.Dev ? null : this.props.navigation.state.params.suggestions
+        const org = this.props.navigation.state.params.org
+        const country = this.props.navigation.state.params.country
         
         const shareOptions = {
             title: "React Native",
@@ -132,7 +134,9 @@ export default class ResultsScreen extends React.Component {
                                    source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>
                     <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[2])]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
-                    
+    
+                    <Text>Organization type: {org}</Text>
+                    <Text>Country: {country}</Text>
                     <Text>www.planetaction.net</Text>
                 </ScrollView>
                 </ViewShot>
@@ -153,7 +157,8 @@ export default class ResultsScreen extends React.Component {
                                    source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>
                     <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[2])]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text style={styles.answer}>{sug + "\n\n"}</Text>)}</Text>
-        
+                    <Text>Organization type: {org}</Text>
+                    <Text>Country: {country}</Text>
                     <Text>www.planetaction.net</Text>
                 </ScrollView>
                 
