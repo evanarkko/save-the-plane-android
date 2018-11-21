@@ -179,12 +179,13 @@ export default class HomeScreen extends React.Component {
                                 //deactivate button
                                 this.setState({isButtonDisabled: true})
                                 const res = await Api.groupGenesis({addresses: Convert.arrayToCSV(this.state.emails), ...this.props.navigation.state.params})
+                                await this.saveIdToStorage(res)
                                 this.setState({isButtonDisabled: false})
                                 //(activate button)
                                 this.props.navigation.goBack(null)
                                 this.props.navigation.goBack(null)
                                 this.props.navigation.goBack(null)
-                                this.saveIdToStorage(res)
+                                
                                 alert("You have created a new group. Your groupId is " + this.extractId(res))
                             }
                         }}
