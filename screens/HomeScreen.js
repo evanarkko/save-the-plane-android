@@ -17,7 +17,8 @@ export default class HomeScreen extends React.Component {
             termsAgreedUpon: false,
             limbo: false,
             limbo2: false,
-            userId: ""
+            userId: "",
+            isMaster: false
         }
     }
     
@@ -69,6 +70,8 @@ export default class HomeScreen extends React.Component {
             console.log("failed to retreive ID from storage")
         }
     }
+    
+    ContinueButton = () => <Button title="continue anyway" color={Config.Color.PRIMARY} onPress={() => Api.killGroup(this.state.userId)}/>
     
     render() {
         return (
@@ -123,8 +126,8 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.topView}>
                     {this.state.limbo ?
                         this.state.limbo2 ?
-                            <Text style={styles.header}>Your team is not finished suggesting yet...</Text> :
-                            <Text style={styles.header}>Your team is not finished selecting yet...</Text>
+                            <View><Text style={styles.header}>Your team is not finished suggesting yet...</Text>{this.state.isMaster && <this.ContinueButton/>}</View> :
+                            <View><Text style={styles.header}>Your team is not finished selecting yet...</Text>{this.state.isMaster && <this.ContinueButton/>}</View>
                         :
                         <Text style={styles.header}>My team will help reach the Sustainable Development
                             Goals
@@ -188,8 +191,8 @@ export default class HomeScreen extends React.Component {
     
     navigateDynamically = async () => {
         if (Config.Dev || this.state.termsAgreedUpon) {
-            const data = Config.Dev ? parseInt(this.state.userId) : await Api.getGroupStatus(this.state.userId)
-            const status = data.status
+            const data = await Api.getGroupStatus(this.state.userId)
+            const status = Config.Dev ? parseInt(this.state.userId) : data.status
             switch (status) {
                 case 0:
                     this.props.navigation.navigate('Selection', {userId: this.state.userId})
@@ -199,8 +202,10 @@ export default class HomeScreen extends React.Component {
                     setTimeout(() => (this.setState({limbo: false})), 4000)
                     if(data.master) {
                         console.log("master")
+                        this.setState({isMaster: true})
                     }else{
                         console.log("notmaster")
+                        this.setState({isMaster: false})
                     }
                     //this.promptLimboAlert()
                     break
@@ -215,8 +220,10 @@ export default class HomeScreen extends React.Component {
                     setTimeout(() => (this.setState({limbo: false, limbo2: false})), 4000)
                     if(data.master) {
                         console.log("master")
+                        this.setState({isMaster: true})
                     }else{
                         console.log("notmaster")
+                        this.setState({isMaster: false})
                     }
                     //this.promptLimboAlert()
                     break

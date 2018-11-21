@@ -10,9 +10,9 @@ const sendSelections = async (data) => {//send ordered list of 17 integers, init
 }
 
 const killGroup = async (groupId) => {//Only done by groupmaster. Possibly not implemented in 1st version
-    const res = await axios.post('/endpoint',
+    const res = await axios.post(`${baseUrl}/kill-group/`,
         {
-            groupId: groupId
+            userId: groupId
         })
     return res
 }
