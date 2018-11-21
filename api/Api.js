@@ -32,6 +32,7 @@ const groupGenesis = async (data) => {
         selections: Convert.arrayToCSV(data.selections),
         country: data.country,
         organizationType: data.organizationType
+        firstName: data.firstName
     }
     console.log(JSON.stringify(genesisData))
     const res = await axios.post(`${baseUrl}/group-genesis/`, genesisData)

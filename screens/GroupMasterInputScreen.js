@@ -114,11 +114,12 @@ export default class GroupMasterInputScreen extends React.Component {
                 <View style={styles.opArea}>
                     <Button
                         onPress={() => {
-                            if (Config.Dev || this.state.email) {
+                            if (Config.Dev || (this.state.email && this.state.firstName)) {
                                 this.props.navigation.navigate('Selection', {
                                     organizationType: this.state.organizationType,
                                     country: this.state.country,
-                                    email: this.state.email
+                                    email: this.state.email,
+                                    firstName: this.state.firstName
                                 })
                             }
                         }}
