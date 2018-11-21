@@ -14,7 +14,7 @@ import {
     ScrollView,
     Modal
 } from 'react-native';
-import Config from '../logic/Config'
+import Config, {explanationArray} from '../logic/Config'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import {resultHelp} from "../resources/HelpText";
@@ -31,7 +31,7 @@ export default class ResultsScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         const {params = {}} = navigation.state;
         return {
-            title: 'Yur Results',
+            title: 'Your Results',
             headerStyle: {
                 backgroundColor: Config.Color.PRIMARY,
             },
@@ -110,18 +110,24 @@ export default class ResultsScreen extends React.Component {
                     </View>
                 </Modal>
                 <ScrollView style={styles.resultsView}>
+                    
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[0])]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[1]))} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[1])]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[1]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    
                     <ScalableImage style={styles.img}
                                    source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[2])]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
@@ -169,6 +175,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignSelf: "center",
         marginTop: 15
+    },
+    goalTitle: {
+        color: Config.Color.TEXT,
+        fontSize: 18,
+        fontWeight: "bold",
+        alignSelf: "center"
     },
     answerSet: {
         display: "flex",
