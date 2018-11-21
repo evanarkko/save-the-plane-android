@@ -17,7 +17,8 @@ export default class HomeScreen extends React.Component {
             termsAgreedUpon: false,
             limbo: false,
             limbo2: false,
-            userId: ""
+            userId: "",
+            isMaster: false
         }
     }
     
@@ -69,6 +70,8 @@ export default class HomeScreen extends React.Component {
             console.log("failed to retreive ID from storage")
         }
     }
+    
+    ContinueButton = () => <Button title="continue anyway" color={Config.Color.PRIMARY} onPress={() => Api.killGroup(this.state.userId)}/>
     
     render() {
         return (
@@ -123,8 +126,8 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.topView}>
                     {this.state.limbo ?
                         this.state.limbo2 ?
-                            <Text style={styles.header}>Your team is not finished suggesting yet...</Text> :
-                            <Text style={styles.header}>Your team is not finished selecting yet...</Text>
+                            <View><Text style={styles.header}>Your team is not finished suggesting yet...</Text>{this.state.isMaster && <this.ContinueButton/>}</View> :
+                            <View><Text style={styles.header}>Your team is not finished selecting yet...</Text>{this.state.isMaster && <this.ContinueButton/>}</View>
                         :
                         <Text style={styles.header}>My team will help reach the Sustainable Development
                             Goals
@@ -188,7 +191,8 @@ export default class HomeScreen extends React.Component {
     
     navigateDynamically = async () => {
         if (Config.Dev || this.state.termsAgreedUpon) {
-            const status = Config.Dev ? parseInt(this.state.userId) : await Api.getGroupStatus(this.state.userId)
+            const data = await Api.getGroupStatus(this.state.userId)
+            const status = Config.Dev ? parseInt(this.state.userId) : data.status
             switch (status) {
                 case 0:
                     this.props.navigation.navigate('Selection', {userId: this.state.userId})
@@ -196,6 +200,13 @@ export default class HomeScreen extends React.Component {
                 case 1://limbo
                     this.setState({limbo: true})
                     setTimeout(() => (this.setState({limbo: false})), 4000)
+                    if(data.master) {
+                        console.log("master")
+                        this.setState({isMaster: true})
+                    }else{
+                        console.log("notmaster")
+                        this.setState({isMaster: false})
+                    }
                     //this.promptLimboAlert()
                     break
                 case 2:
@@ -207,16 +218,26 @@ export default class HomeScreen extends React.Component {
                 case 3:
                     this.setState({limbo: true, limbo2: true})
                     setTimeout(() => (this.setState({limbo: false, limbo2: false})), 4000)
+                    if(data.master) {
+                        console.log("master")
+                        this.setState({isMaster: true})
+                    }else{
+                        console.log("notmaster")
+                        this.setState({isMaster: false})
+                    }
                     //this.promptLimboAlert()
                     break
                 case 4:
                     if(Config.Dev){
                         this.props.navigation.navigate('Results')
                     }else{
-                        const results = await Api.getResults(this.state.userId)
+                        const data = await Api.getResults(this.state.userId)
+                        const results = JSON.parse(data.results)
+                        const org = data.org
+                        const country = data.country
                         console.log(JSON.stringify(results))
                         console.log(JSON.stringify({selections: [...Object.keys(results)], suggestions: results}))
-                        this.props.navigation.navigate('Results', {selections: [...Object.keys(results)], suggestions: results})
+                        this.props.navigation.navigate('Results', {selections: [...Object.keys(results)], suggestions: results, org, country})
                     }
                     break
         

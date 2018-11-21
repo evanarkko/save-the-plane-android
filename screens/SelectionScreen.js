@@ -160,7 +160,7 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.opArea}>
                     <Button
                         onPress={() => this.navigateFurther()}
-                        title="Save and Invite Team members"
+                        title={"Save and continue"}
                         color={Config.Color.PRIMARY}
                     />
                 </View>
