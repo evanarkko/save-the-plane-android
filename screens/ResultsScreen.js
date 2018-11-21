@@ -18,6 +18,7 @@ import Config, {explanationArray} from '../logic/Config'
 import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import {resultHelp} from "../resources/HelpText";
+import ViewShot from 'react-native-view-shot'
 
 export default class ResultsScreen extends React.Component {
     constructor(props) {
@@ -62,6 +63,10 @@ export default class ResultsScreen extends React.Component {
         this.props.navigation.setParams({
             openHelpModal: () => this.setState({helpModalVisible: true})
         });
+    }
+    
+    onCapture = uri => {
+        console.log("do something with ", uri);
     }
     
     ShareButton = () => <TouchableOpacity onPress={() => this.setState({visible: !this.state.visible})} style={styles.instructions}>
@@ -109,6 +114,7 @@ export default class ResultsScreen extends React.Component {
                         </ScrollView>
                     </View>
                 </Modal>
+                <ViewShot onCapture={this.onCapture} options={{result: "data-uri"}} captureMode="mount" style={styles.captureContainer}>
                 <ScrollView style={styles.resultsView}>
                     
                     <ScalableImage style={styles.img}
@@ -132,6 +138,33 @@ export default class ResultsScreen extends React.Component {
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     
+                    <Text>www.planetaction.net</Text>
+                </ScrollView>
+                </ViewShot>
+    
+                <ScrollView style={styles.resultsView}>
+        
+                    <ScalableImage style={styles.img}
+                                   source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[0])]}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+        
+                    <ScalableImage style={styles.img}
+                                   source={Requirer.dynamicImgRequire(parseInt(selections[1]))} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[1])]}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[1]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+        
+                    <ScalableImage style={styles.img}
+                                   source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[2])]}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+                    <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
+        
                     <Text>www.planetaction.net</Text>
                 </ScrollView>
                 
@@ -168,10 +201,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         margin: 6
     },
+    captureContainer: {
+        flex: 7,
+        opacity: 0,
+        position: "absolute"
+    },
     resultsView: {
         borderWidth: 1,
-        borderStyle: "dashed",
-        overflow: "scroll"
+        borderStyle: "dashed"
     },
     img: {
         borderRadius: 10,
@@ -212,7 +249,6 @@ const styles = StyleSheet.create({
         color: Config.Color.PRIMARY
     },
     opArea: {
-        height: 38,
         backgroundColor: Config.Color.SECONDARY,
         justifyContent: 'center',
         
