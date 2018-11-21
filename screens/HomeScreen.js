@@ -157,7 +157,7 @@ export default class HomeScreen extends React.Component {
                     }}>
                         <TextInput
                             style={{height: 40, width: 180}}
-                            placeholder="Paste Team Key Here"
+                            placeholder="Copy Team Key Here"
                             keyboardType="numeric"
                             value={this.state.userId}
                             onChangeText={text => this.setState({userId: text})}
