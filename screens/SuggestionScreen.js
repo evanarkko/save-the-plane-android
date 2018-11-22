@@ -36,7 +36,7 @@ export default class SuggestionScreen extends React.Component {
                 height: 36,
                 color: "white",
                 marginRight: 8,
-                backgroundColor: "white"
+                backgroundColor: Config.Color.SECONDARY
             }} onPress={() => params.openHelpModal()}><Text style={{
                 fontSize: 20,
                 fontWeight: "bold",
@@ -74,7 +74,8 @@ export default class SuggestionScreen extends React.Component {
                             </View>
                             <Button
                                 onPress={() => this.setState({helpModalVisible: false})}
-                                title="Close modal"
+                                title="Close info"
+                                color={Config.Color.PRIMARY}
                             />
                         </ScrollView>
                     </View>
