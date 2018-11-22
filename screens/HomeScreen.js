@@ -181,7 +181,7 @@ export default class HomeScreen extends React.Component {
                 </View>
                 <View style={styles.bottomView}>
                     <View style={styles.consentContainer}>
-                        <Text style={{fontSize: 8, maxWidth: '50%'}}>I accept to publicly share all our ideas and
+                        <Text style={{fontSize: 10, maxWidth: '50%', color: Config.Color.TEXT}}>I accept to publicly share all our ideas and
                             agree to the <Text style={{textDecorationLine: 'underline', fontWeight: "bold"}}
                                                onPress={() => this.setState({termsModalVisible: true})}>terms of
                                 use</Text>
@@ -189,6 +189,7 @@ export default class HomeScreen extends React.Component {
                         <CheckBox
                             label=''
                             onChange={(checked) => this.setState({termsAgreedUpon: checked})}
+                            color={Config.Color.TEXT}
                         />
                     </View>
                 </View>
@@ -252,7 +253,7 @@ export default class HomeScreen extends React.Component {
         } else {
             Alert.alert(
                 'One thing',
-                'Please agree to our terms of use before proceeding further',
+                'Please read and accept the Terms of Use before proceeding.',
                 [
                     {text: 'OK', onPress: () => console.log('OK Pressed')}
                 ],
@@ -267,7 +268,7 @@ export default class HomeScreen extends React.Component {
         } else {
             Alert.alert(
                 'One thing',
-                'Please agree to our terms of use before proceeding further',
+                'Please read and accept the Terms of Use before proceeding.',
                 [
                     {text: 'OK', onPress: () => console.log('OK Pressed')}
                 ],

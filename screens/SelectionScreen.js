@@ -20,6 +20,7 @@ export default class HomeScreen extends React.Component {
         this.state = {
             helpModalVisible: false,
             selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+            selectionsMade: 0,
             explainIndex: 0,
             screenWidth: Dimensions.get('window').width,
             screenHeight: Dimensions.get('window').height,
@@ -122,6 +123,7 @@ export default class HomeScreen extends React.Component {
     
     onBlockRelease = (x, y, iDragged) => {
         if (this.coordinatesToIndex(x, y) > -1) this.swapSelections(iDragged, this.coordinatesToIndex(x, y))
+        this.setState({selectionsMade: this.state.selectionsMade+1})
     }
     
     setBlockDimensions = (height, width) => {
@@ -194,7 +196,7 @@ export default class HomeScreen extends React.Component {
     }
     
     navigateFurther = () => {
-        if (Config.Dev || this.state.selections.length === 17) {
+        if (Config.Dev || this.state.selectionsMade > 5) {
             if (this.props.navigation.state.params.userId) {
                 Api.sendSelections({
                     selections: Convert.arrayToCSV(this.state.selections),
@@ -208,7 +210,7 @@ export default class HomeScreen extends React.Component {
         } else {
             Alert.alert(
                 'A little more',
-                'Please finish selecting before proceeding further',
+                'Please sort all SDG’s before proceeding',
                 [
                     {text: 'OK', onPress: () => console.log('OK Pressed')}
                 ],

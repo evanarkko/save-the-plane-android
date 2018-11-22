@@ -135,11 +135,11 @@ export default class HomeScreen extends React.Component {
                             onPress={() => {
                                 if (this.state.new_email) {
                                     if(this.state.emails.length > 8) {
-                                        alert("The team is full")
+                                        alert("Maximum number of team members is 10")
                                     } else if (emailValidator.validate(this.state.new_email)) {
                                         !this.state.emails.includes(this.state.new_email) && this.setState({emails: this.state.emails.concat(this.state.new_email)})
                                     } else {
-                                        alert('email not valid')
+                                        alert('E-mail address is not valid')
                                     }
                                     this.setState({new_email: ""})
                                 }
@@ -170,7 +170,7 @@ export default class HomeScreen extends React.Component {
                         disabled={this.state.isButtonDisabled}
                         onPress={async () => {
                             if(!this.state.emails[0]){
-                                alert("You haven't added anyone to your team yet...")
+                                alert("You haven’t added any team members yet")
                             }else if(Config.Dev){
                                 this.props.navigation.goBack(null)
                                 this.props.navigation.goBack(null)
@@ -186,7 +186,7 @@ export default class HomeScreen extends React.Component {
                                 this.props.navigation.goBack(null)
                                 this.props.navigation.goBack(null)
                                 
-                                alert("You have created a new group. Your groupId is " + this.extractId(res))
+                                alert("Perfect! Thanks for creating a new team! Your Team ID is " + this.extractId(res) + " Restart the app in case it does not appear automatically.")
                             }
                         }}
                         title="Save and Send Invitations"

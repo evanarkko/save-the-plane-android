@@ -130,7 +130,7 @@ export default class SuggestionScreen extends React.Component {
                                     })
                                     this.props.navigation.goBack()
                                 } else {
-                                    alert("Please write about all three causes")
+                                    alert("Please write down your ideas for all three SDG’s")
                                 }
                             }else{
                                 this.props.navigation.goBack()
