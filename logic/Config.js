@@ -11,7 +11,7 @@ let Color =  Colors[2] //Math.floor(Math.random() * Colors.length)]/*Math.floor(
 const toggleColor = () => {
     Color =  Colors[Math.floor(Math.random() * Colors.length)]
 }
-const Dev = false
+const Dev = true
 
 export default { Color, Dev, toggleColor }
 

@@ -19,6 +19,7 @@ import ScalableImage from '../components/ScalableImage'
 import Requirer from '../logic/Requirer'
 import {resultHelp} from "../resources/HelpText";
 import ViewShot from 'react-native-view-shot'
+import Share from 'react-native-share'
 
 export default class ResultsScreen extends React.Component {
     constructor(props) {
@@ -70,15 +71,15 @@ export default class ResultsScreen extends React.Component {
         this.setState({imageUri: uri})
     }
     
-    ShareButton = () => <TouchableOpacity onPress={() => this.setState({visible: !this.state.visible})} style={styles.instructions}>
+    ShareButton = () => <TouchableOpacity onPress={() => Share.open({url: this.state.imageUri})} style={styles.instructions}>
         <Text style={{color: "white"}}>{this.state.visible && "close "}<Text style={{fontWeight: "bold"}}>Share</Text>{!this.state.visible && " on social media"}</Text>
     </TouchableOpacity>
     
     render() {
         const selections = Config.Dev ? [1, 2, 3] : this.props.navigation.state.params.selections
         const suggestions = Config.Dev ? null : this.props.navigation.state.params.suggestions
-        const org = this.props.navigation.state.params.org
-        const country = this.props.navigation.state.params.country
+        const org = Config.Dev ? "Private" : this.props.navigation.state.params.org
+        const country = Config.Dev ? "Finland" : this.props.navigation.state.params.country
         
         const shareOptions = {
             title: "React Native",
@@ -90,7 +91,7 @@ export default class ResultsScreen extends React.Component {
         const shareUrl = "https://www.youtube.com"
         /*GENERATED / FROM BACKEND*/
         
-        const linkedinURL = `https://www.linkedin.com/shareArticle?mini=true&source=`
+        const linkedinURL = `https://www.linkedin.com/shareArticle?mini=true&url=`
         
         
         return (
