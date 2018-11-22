@@ -3,6 +3,7 @@ import {StyleSheet, TextInput, Text, View, Button, Picker, TouchableOpacity, Mod
 import Config from "../logic/Config";
 import countries from "../resources/Countries"
 import {groupMasterInputHelp} from "../resources/HelpText";
+import emailValidator from 'email-validator'
 
 const organizationTypes = ["Private Sector", "National Government", "Regional Government", "Local Government", "Association", "Other"]
 
@@ -115,7 +116,7 @@ export default class GroupMasterInputScreen extends React.Component {
                 <View style={styles.opArea}>
                     <Button
                         onPress={() => {
-                            if (Config.Dev || (this.state.email && this.state.firstName)) {
+                            if (Config.Dev || (this.state.email && this.state.firstName && emailValidator.validate(this.state.email))) {
                                 this.props.navigation.navigate('Selection', {
                                     organizationType: this.state.organizationType,
                                     country: this.state.country,
