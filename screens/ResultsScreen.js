@@ -122,18 +122,18 @@ export default class ResultsScreen extends React.Component {
                 <ScrollView style={styles.resultsView}>
                     
                     <ScalableImage style={styles.img}
-                                   source={Requirer.dynamicImgRequire(parseInt(selections[0]))} width={80}/>
-                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[0])]}</Text>
+                                   source={Requirer.dynamicImgRequire(parseInt(selections[0])-1)} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[0])-1]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[0]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     
                     <ScalableImage style={styles.img}
-                                   source={Requirer.dynamicImgRequire(parseInt(selections[1]))} width={80}/>
-                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[1])]}</Text>
+                                   source={Requirer.dynamicImgRequire(parseInt(selections[1])-1)} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[1])-1]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[1]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
                     
                     <ScalableImage style={styles.img}
-                                   source={Requirer.dynamicImgRequire(parseInt(selections[2]))} width={80}/>
-                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[2])]}</Text>
+                                   source={Requirer.dynamicImgRequire(parseInt(selections[2])-1)} width={80}/>
+                    <Text style={styles.goalTitle}>{explanationArray[parseInt(selections[2])-1]}</Text>
                     <Text style={styles.answerSet}>{Config.Dev ? "We have invested 2,2 million euro in water facilities since 2016" : suggestions[selections[2]].map(sug => <Text>{sug + "\n"}</Text>)}</Text>
     
                     <Text>Organization type: {org}</Text>
