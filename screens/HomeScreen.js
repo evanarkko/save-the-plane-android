@@ -71,7 +71,14 @@ export default class HomeScreen extends React.Component {
         }
     }
     
-    ContinueButton = () => <Button title="continue anyway" color={Config.Color.PRIMARY} onPress={() => Api.killGroup(this.state.userId)}/>
+    ContinueButton = () => <Button title="continue anyway" color={Config.Color.PRIMARY} onPress={() => Alert.alert(
+        'Warning',
+        'Do you want to drop out all remaining members and continue?',
+        [
+            {text: 'YES', onPress: () => Api.killGroup(this.state.userId)}
+        ],
+        {cancelable: true}
+    )}/>
     
     render() {
         return (
