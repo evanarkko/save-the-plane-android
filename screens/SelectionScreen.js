@@ -21,8 +21,12 @@ export default class HomeScreen extends React.Component {
             helpModalVisible: false,
             selections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
             explainIndex: 0,
-            scaleFactorX: hardWidth / Dimensions.get('window').width,
-            scaleFactorY: hardHeight / Dimensions.get('window').height
+            screenWidth: Dimensions.get('window').width,
+            screenHeight: Dimensions.get('window').height,
+            blockHeight: 0,
+            blockWidth: 0,
+            containerHeight: 0,
+            opAreaHeight: 0,
         }
         console.log("width: " + Dimensions.get('window').width) //MAKE DIMENSION ADJUSTMENTS WITH THIS (and height)
         console.log("height: " + Dimensions.get('window').height) //for x use (hardWidth/Dimensions.get('window').width) * x and so on
@@ -66,20 +70,23 @@ export default class HomeScreen extends React.Component {
     
     
     coordinatesToIndex = (x, y) => {
-        const x1 = 20 * this.state.scaleFactorX
-        const x2 = 110 * this.state.scaleFactorX
-        const x3 = 195 * this.state.scaleFactorX
-        const x4 = 284 * this.state.scaleFactorX
+        ygap = (this.state.containerHeight - 5 * this.state.blockHeight) / 5
+        
+        console.log(this.state.blockWidth)
+        const x1 = 0
+        const x2 = this.state.blockWidth
+        const x3 = x2 + this.state.blockWidth
+        const x4 = x3 + this.state.blockWidth
         
         
-        const y1 = 130 * this.state.scaleFactorY
-        const y2 = 210 * this.state.scaleFactorY
-        const y3 = 300 * this.state.scaleFactorY
-        const y4 = 378 * this.state.scaleFactorY
-        const y5 = 455 * this.state.scaleFactorY
+        const y1 = this.state.screenHeight - this.state.containerHeight - this.state.opAreaHeight
+        const y2 = y1 + this.state.blockHeight + ygap
+        const y3 = y2 + this.state.blockHeight + ygap
+        const y4 = y3 + this.state.blockHeight + ygap
+        const y5 = y4 + this.state.blockHeight + ygap
         
-        const blockWidthX = 65 * this.state.scaleFactorX
-        const blockWidthY = 65 * this.state.scaleFactorY
+        const blockWidthX = this.state.blockWidth
+        const blockWidthY = this.state.blockHeight
         
         
         //1st row
@@ -117,6 +124,10 @@ export default class HomeScreen extends React.Component {
         if (this.coordinatesToIndex(x, y) > -1) this.swapSelections(iDragged, this.coordinatesToIndex(x, y))
     }
     
+    setBlockDimensions = (height, width) => {
+        this.setState({blockHeight: height, blockWidth: width})
+    }
+    
     render() {
         return (
             <View style={styles.container}>
@@ -146,7 +157,7 @@ export default class HomeScreen extends React.Component {
                     Sort ALL symbols. Order from TOP = where your organization has made most impact to BOTTOM = least.
                 </Text>
                 
-                <View style={styles.pickArea}>
+                <View style={styles.pickArea}  onLayout={e => this.setState({containerHeight: e.nativeEvent.layout.height})}>
                     <ImageGrid
                         selectImage={this.selectImage}
                         deselectImage={this.deselectImage}
@@ -155,9 +166,10 @@ export default class HomeScreen extends React.Component {
                         coordinateToIndex={this.coordinatesToIndex}
                         explainIndex={this.state.explainIndex}
                         setExplainIndex={(explainIndex) => this.setState({explainIndex})}
+                        setBlockDimensions={this.setBlockDimensions}
                     />
                 </View>
-                <View style={styles.opArea}>
+                <View style={styles.opArea} onLayout={e => this.setState({opAreaHeight: e.nativeEvent.layout.height})}>
                     <Button
                         onPress={() => this.navigateFurther()}
                         title={"Save and continue"}
@@ -206,7 +218,7 @@ export default class HomeScreen extends React.Component {
     }
 }
 
-const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex, explainIndex, setExplainIndex}) => {
+const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex, explainIndex, setExplainIndex, setBlockDimensions}) => {
     let rows = []
     for (let y = 0; y < 5; y++) {
         rows.push(
@@ -220,6 +232,7 @@ const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coor
                     coordinateToIndex={coordinateToIndex}
                     explainIndex={explainIndex}
                     setExplainIndex={setExplainIndex}
+                    setBlockDimensions={setBlockDimensions}
                 />
             </View>
         )
@@ -231,7 +244,7 @@ const ImageGrid = ({selectImage, deselectImage, selections, onBlockRelease, coor
     )
 }
 
-const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex, explainIndex, setExplainIndex}) => {
+const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease, coordinateToIndex, explainIndex, setExplainIndex, setBlockDimensions}) => {
     
     const width = 80
     let cols = []
@@ -240,6 +253,7 @@ const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease
         const image =
             boxIndex < 18
                 ?
+                <View onLayout={e => setBlockDimensions(e.nativeEvent.layout.height, e.nativeEvent.layout.width)}>
                 <DraggableImage
                     onClick={() => {
                         setExplainIndex(boxIndex - 1)
@@ -249,6 +263,7 @@ const ImageColumns = ({y, selectImage, deselectImage, selections, onBlockRelease
                     onRelease={(x, y) => {
                         onBlockRelease(x, y, boxIndex - 1)
                     }}/>
+                </View>
                 : boxIndex === 18 ?
                 <Text style={styles.explanation}>{explanationArray[selections[explainIndex] - 1]}</Text>
                 : null
@@ -363,7 +378,8 @@ const styles = StyleSheet.create({
     },
     opArea: {
         height: 38,
-        backgroundColor: Config.Color.PRIMARY,
+        padding:5,
+        backgroundColor: Config.Color.SECONDARY,
         justifyContent: 'flex-end'
     }
     
