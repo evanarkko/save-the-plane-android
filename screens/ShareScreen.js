@@ -116,7 +116,7 @@ export default class HomeScreen extends React.Component {
                             this.props.navigation.state.params.selections
                                 .filter((sel, i) => i < 3)
                                 .map(sel => <ScalableImage style={styles.img} key={sel}
-                                                           source={Requirer.dynamicImgRequire(sel)} width={80}/>)
+                                                           source={Requirer.dynamicImgRequire(sel-1)} width={80}/>)
                     }
                 </View>
                 <Text style={styles.headerText}>
